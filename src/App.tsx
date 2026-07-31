@@ -180,17 +180,29 @@ export default function App() {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
     };
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        mouseX.set(e.touches[0].clientX);
+        mouseY.set(e.touches[0].clientY);
+      }
+    };
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
     
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
     window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('touchstart', handleMouseDown, { passive: true });
     window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('touchend', handleMouseUp);
     
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('touchstart', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('touchend', handleMouseUp);
     };
   }, [mouseX, mouseY]);
 
@@ -198,7 +210,7 @@ export default function App() {
   const parallaxY = useTransform(mouseY, [0, typeof window !== 'undefined' ? window.innerHeight : 1080], [20, -20]);
 
   return (
-    <div ref={containerRef} className="bg-black text-white font-sans selection:bg-[var(--wp-block-synced-color)] selection:text-black h-[2600vh] relative w-full md:cursor-none">
+    <div ref={containerRef} className="bg-black text-white font-sans selection:bg-[var(--wp-block-synced-color)] selection:text-black h-[2600vh] relative w-full md:cursor-none select-none md:select-auto [-webkit-touch-callout:none] [-webkit-tap-highlight-color:transparent]">
       
       {/* Custom Cursor */}
       <motion.div 
