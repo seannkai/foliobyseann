@@ -667,8 +667,9 @@ export default function App() {
           </div>
           <div className="flex flex-col items-center md:items-end text-center md:text-right pointer-events-auto w-full md:w-auto">
             <div className="flex flex-col gap-4 md:gap-6 mb-8 md:mb-12 w-full md:w-auto">
-              <a href="https://linkedin.com/in/seannkai" className="font-bold uppercase text-3xl md:text-5xl lg:text-6xl text-black hover:bg-black hover:text-white px-4 md:px-6 py-3 md:py-4 transition-none border-4 border-transparent hover:border-black block w-full md:w-auto">LinkedIn</a>
-              <a href="https://instagram.com/seannkai" className="font-bold uppercase text-3xl md:text-5xl lg:text-6xl text-black hover:bg-black hover:text-white px-4 md:px-6 py-3 md:py-4 transition-none border-4 border-transparent hover:border-black block w-full md:w-auto">Instagram</a>
+              <a href="https://github.com/seannkai" target="_blank" rel="noopener noreferrer" className="font-bold uppercase text-3xl md:text-5xl lg:text-6xl text-black hover:bg-black hover:text-white px-4 md:px-6 py-3 md:py-4 transition-none border-4 border-transparent hover:border-black block w-full md:w-auto">GitHub</a>
+              <a href="https://linkedin.com/in/seannkai" target="_blank" rel="noopener noreferrer" className="font-bold uppercase text-3xl md:text-5xl lg:text-6xl text-black hover:bg-black hover:text-white px-4 md:px-6 py-3 md:py-4 transition-none border-4 border-transparent hover:border-black block w-full md:w-auto">LinkedIn</a>
+              <a href="https://instagram.com/seannkai" target="_blank" rel="noopener noreferrer" className="font-bold uppercase text-3xl md:text-5xl lg:text-6xl text-black hover:bg-black hover:text-white px-4 md:px-6 py-3 md:py-4 transition-none border-4 border-transparent hover:border-black block w-full md:w-auto">Instagram</a>
               <a href="mailto:seanntheuser@gmail.com" className="font-bold uppercase text-3xl md:text-5xl lg:text-6xl text-black hover:bg-black hover:text-white px-4 md:px-6 py-3 md:py-4 transition-none border-4 border-transparent hover:border-black block w-full md:w-auto">Email</a>
             </div>
             <p className="text-xs md:text-sm uppercase tracking-widest font-mono text-black">© 2026 Seann Omac. All rights reserved.</p>
