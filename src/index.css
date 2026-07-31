@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Clash Display", "Archivo", "Space Grotesk", sans-serif;
+  --color-neutral-50: #ffffff;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-700: #404040;
+  --color-neutral-900: #000000;
+}
+
+@layer base {
+  :root {
+    --background: #000000;
+    --foreground: #ffffff;
+    --border: #ffffff;
+    color-scheme: dark;
+    --wp-block-synced-color: #ffffff;
+    --wp-block-synced-color--rgb: 255,255,255;
+    --wp-bound-block-color: var(--wp-block-synced-color);
+    --wp-editor-canvas-background: #ddd;
+    --wp-admin-theme-color: #007cba;
+    --wp-admin-theme-color--rgb: 0,124,186;
+    --wp-admin-theme-color-darker-10: #006ba1;
+    --wp-admin-theme-color-darker-10--rgb: 0,107,160.5;
+    --wp-admin-theme-color-darker-20: #005a87;
+    --wp-admin-theme-color-darker-20--rgb: 0,90,135;
+    --wp-admin-border-width-focus: 2px;
+    --wp--preset--font-size--normal: 16px;
+    --wp--preset--font-size--huge: 42px;
+    --wp--preset--aspect-ratio--square: 1;
+    --wp--preset--aspect-ratio--4-3: 4/3;
+    --wp--preset--aspect-ratio--3-4: 3/4;
+    --wp--preset--aspect-ratio--3-2: 3/2;
+    --wp--preset--aspect-ratio--2-3: 2/3;
+    --wp--preset--aspect-ratio--16-9: 16/9;
+    --wp--preset--aspect-ratio--9-16: 9/16;
+    --wp--preset--color--black: #000000;
+    --wp--preset--color--cyan-bluish-gray: #abb8c3;
+    --wp--preset--color--white: #ffffff;
+    --wp--preset--color--pale-pink: #f78da7;
+    --wp--preset--color--vivid-red: #cf2e2e;
+    --wp--preset--color--luminous-vivid-orange: #ff6900;
+    --wp--preset--color--luminous-vivid-amber: #fcb900;
+    --wp--preset--color--light-green-cyan: #7bdcb5;
+    --wp--preset--color--vivid-green-cyan: #00d084;
+    --wp--preset--color--pale-cyan-blue: #8ed1fc;
+    --wp--preset--color--vivid-cyan-blue: #0693e3;
+    --wp--preset--color--vivid-purple: #9b51e0;
+  }
+  
+  html, body {
+    @apply bg-[var(--background)] text-[var(--foreground)] selection:bg-white selection:text-black antialiased font-sans scroll-smooth;
+  }
+  
+  /* Brutalist scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #000;
+    border-left: 1px solid #333;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #fff;
+  }
+  
+  /* Typography Scale Overrides for Swiss Grid Feel */
+  h1 { @apply text-5xl md:text-7xl lg:text-9xl font-bold uppercase tracking-tighter leading-none; }
+  h2 { @apply text-3xl md:text-5xl font-semibold uppercase tracking-tight; }
+  h3 { @apply text-2xl md:text-3xl font-medium uppercase tracking-tight; }
+  p { @apply text-base md:text-lg leading-relaxed max-w-[65ch]; }
+}
+
+@layer utilities {
+  .swiss-grid {
+    @apply grid grid-cols-4 md:grid-cols-12 gap-0 border-l-2 border-white;
+  }
+  .swiss-col {
+    @apply border-r-2 border-white p-4 md:p-8;
+  }
+  .swiss-row {
+    @apply border-b-2 border-white;
+  }
+  .swiss-invert {
+    @apply hover:bg-white hover:text-black transition-none cursor-crosshair;
+  }
+}
