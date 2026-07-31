@@ -1,32 +1,21 @@
-# React + TypeScript + Vite
+# folio by seann
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+my personal site. built with react, framer motion, and severe antisocial tendencies. 
 
-Currently, two official plugins are available:
+## the setup
+- react 18 + typescript (vite)
+- tailwind css for the brutalist b&w aesthetic
+- framer motion for the massive scroll-tied cinematic zoom
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## run it
+\`\`\`bash
+npm install
+npm run dev
+npm run build
+\`\`\`
 
-## React Compiler
+## security
+vercel.json is locked down. strict CSP, no framing, no scraping. don't even try it.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+---
+*i replace the busywork with code.*
