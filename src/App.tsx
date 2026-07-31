@@ -198,14 +198,14 @@ export default function App() {
   const parallaxY = useTransform(mouseY, [0, typeof window !== 'undefined' ? window.innerHeight : 1080], [20, -20]);
 
   return (
-    <div ref={containerRef} className="bg-black text-white font-sans selection:bg-[var(--wp-block-synced-color)] selection:text-black h-[2600vh] relative w-full cursor-none">
+    <div ref={containerRef} className="bg-black text-white font-sans selection:bg-[var(--wp-block-synced-color)] selection:text-black h-[2600vh] relative w-full md:cursor-none">
       
       {/* Custom Cursor */}
       <motion.div 
         style={{ x: cursorX, y: cursorY, translateX: "-50%", translateY: "-50%" }} 
         animate={{ scale: isClicking ? 0.5 : 1 }}
         transition={{ duration: 0.15 }}
-        className="fixed top-0 left-0 w-8 h-8 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference"
+        className="hidden md:block fixed top-0 left-0 w-8 h-8 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference"
       />
 
       {/* Master Fixed Container */}
