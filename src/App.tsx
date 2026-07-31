@@ -186,11 +186,25 @@ export default function App() {
         mouseY.set(e.touches[0].clientY);
       }
     };
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      if (e.gamma !== null && e.beta !== null) {
+        // Gamma (left-to-right): -45 to 45 degrees
+        const clampedGamma = Math.min(Math.max(e.gamma, -45), 45);
+        const mappedX = ((clampedGamma + 45) / 90) * window.innerWidth;
+        mouseX.set(mappedX);
+        
+        // Beta (front-to-back): typically resting at 45 degrees. Range 0 to 90
+        const clampedBeta = Math.min(Math.max(e.beta, 0), 90);
+        const mappedY = (clampedBeta / 90) * window.innerHeight;
+        mouseY.set(mappedY);
+      }
+    };
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
     
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('deviceorientation', handleOrientation);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('touchstart', handleMouseDown, { passive: true });
     window.addEventListener('mouseup', handleMouseUp);
@@ -199,6 +213,7 @@ export default function App() {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('deviceorientation', handleOrientation);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('touchstart', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
