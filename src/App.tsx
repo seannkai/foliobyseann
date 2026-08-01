@@ -711,7 +711,7 @@ export default function App() {
           <div className="flex flex-col gap-6 md:gap-8 mb-12 md:mb-0 pointer-events-auto items-center md:items-start text-center md:text-left">
             {/* Square, full color photo */}
             <img src="/seannomac-avatar.jpg" alt="Seann Omac" className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 object-cover border-8 border-black shadow-[10px_10px_0px_black] md:shadow-[15px_15px_0px_black]" />
-            <p className="text-6xl md:text-8xl lg:text-[10rem] font-bold uppercase tracking-tighter leading-none text-black">SEANN<br/>OMAC.</p>
+            <p className="text-6xl md:text-8xl lg:text-[10rem] font-bold uppercase tracking-tighter leading-none text-black">SEANN<br/>OMAC</p>
           </div>
           <div className="flex flex-col items-center md:items-end text-center md:text-right pointer-events-auto w-full md:w-auto">
             <div className="flex flex-col gap-4 md:gap-6 mb-8 md:mb-12 w-full md:w-auto">
