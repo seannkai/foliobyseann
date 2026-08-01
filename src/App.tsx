@@ -707,13 +707,20 @@ export default function App() {
         </motion.div>
 
         {/* Layer 11: Footer */}
-        <motion.div style={{ clipPath: ftClip, y: ftY }} className="absolute inset-0 bg-white z-40 p-8 md:p-16 flex flex-col md:flex-row justify-between items-center md:items-end border-t-8 border-black">
-          <div className="flex flex-col gap-6 md:gap-8 mb-12 md:mb-0 pointer-events-auto items-center md:items-start text-center md:text-left">
+        <motion.div style={{ clipPath: ftClip, y: ftY }} className="absolute inset-0 bg-white z-40 p-8 md:p-16 flex flex-col md:flex-row justify-between items-center md:items-end border-t-8 border-black overflow-y-auto">
+          <div className="flex flex-col gap-6 md:gap-8 mb-12 md:mb-0 pointer-events-auto items-center md:items-start text-center md:text-left flex-1">
             {/* Square, full color photo */}
             <img src="/seannomac-avatar.jpg" alt="Seann Omac" className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 object-cover border-8 border-black shadow-[10px_10px_0px_black] md:shadow-[15px_15px_0px_black]" />
-            <p className="text-6xl md:text-8xl lg:text-[10rem] font-bold uppercase tracking-tighter leading-none text-black">SEANN<br/>OMAC</p>
+            <p className="text-6xl md:text-8xl lg:text-[10rem] font-bold uppercase tracking-tighter leading-none text-black mt-4">SEANN<br/>OMAC</p>
+            
+            {/* About Me Text */}
+            <div className="border-l-8 border-black pl-6 md:pl-8 mt-4 max-w-2xl text-left">
+              <p className="text-xl md:text-2xl font-bold text-black leading-tight uppercase tracking-tight">
+                QA, data, automation, ops support, done fast. Twenty years old, self-taught, ENTP, allergic to doing anything the slow way twice. Hand me your calendar, your backlog, or your spreadsheet mess, I've already rebuilt it before you finish explaining the problem.
+              </p>
+            </div>
           </div>
-          <div className="flex flex-col items-center md:items-end text-center md:text-right pointer-events-auto w-full md:w-auto">
+          <div className="flex flex-col items-center md:items-end text-center md:text-right pointer-events-auto w-full md:w-auto shrink-0 md:pl-8">
             <div className="flex flex-col gap-4 md:gap-6 mb-8 md:mb-12 w-full md:w-auto">
               <a href="https://github.com/seannkai" target="_blank" rel="noopener noreferrer" className="font-bold uppercase text-3xl md:text-5xl lg:text-6xl text-black hover:bg-black hover:text-white px-4 md:px-6 py-3 md:py-4 transition-none border-4 border-transparent hover:border-black block w-full md:w-auto">GitHub</a>
               <a href="https://linkedin.com/in/seannkai" target="_blank" rel="noopener noreferrer" className="font-bold uppercase text-3xl md:text-5xl lg:text-6xl text-black hover:bg-black hover:text-white px-4 md:px-6 py-3 md:py-4 transition-none border-4 border-transparent hover:border-black block w-full md:w-auto">LinkedIn</a>
