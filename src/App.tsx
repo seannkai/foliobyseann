@@ -230,7 +230,7 @@ export default function App() {
     <div ref={containerRef} className="bg-black text-white font-sans selection:bg-[var(--wp-block-synced-color)] selection:text-black h-[2600vh] relative w-full md:cursor-none select-none md:select-auto [-webkit-touch-callout:none] [-webkit-tap-highlight-color:transparent]">
       
       <ScrollPrompt />
-      <TableOfContents />
+      <TableOfContents progress={progress} />
 
       {/* Custom Cursor */}
       <motion.div 
@@ -479,7 +479,7 @@ export default function App() {
         {/* Layer 7: Alorica */}
         <motion.div style={{ clipPath: aClip, y: aY }} className="absolute inset-0 z-30 flex items-center justify-center p-4 md:p-8 pointer-events-none">
            <div className="w-full h-full max-w-7xl bg-white flex flex-col border-4 border-black overflow-hidden relative">
-           <div className="flex border-b-4 border-black bg-black justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-white flex-shrink-0">
+           <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
              <span>EXPERIENCE [03]</span>
              <span>Jan 2025 — Jan 2026</span>
            </div>
