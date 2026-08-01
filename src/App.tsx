@@ -133,7 +133,7 @@ export default function App() {
   // 4.5. The Receipts (Experience Intro)
   // Wipes in 0.52 to 0.54, wipes out 0.58 to 0.60
   const pClip = useTransform(progress, [0.52, 0.54, 0.58, 0.60], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
-  const pScale = useTransform(progress, [0.53, 0.60], [0.95, 1.05]);
+  const pScale = useTransform(progress, [0.53, 0.60], [1, 1.1]);
 
   // 5. Flatworld (01)
   const fClip = useTransform(progress, [0.61, 0.63, 0.67, 0.69], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
@@ -363,14 +363,25 @@ export default function App() {
         <motion.div style={{ clipPath: pClip, scale: pScale }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-4 md:p-8 z-50 bg-white">
           <ReceiptsBackground progress={progress} />
           
-          <motion.h1 
+          <motion.div
             style={{ 
               opacity: useTransform(progress, [0.54, 0.56], [0, 1]) 
-            }} 
-            className="text-6xl md:text-8xl lg:text-[10rem] font-bold tracking-tighter text-center leading-none max-w-6xl mx-auto text-white mix-blend-difference relative z-10"
+            }}
+            className="flex flex-col items-center z-10 mix-blend-difference text-white relative"
           >
-            THE RECEIPTS.
-          </motion.h1>
+            <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-bold tracking-tighter text-center leading-none max-w-6xl mx-auto">
+              THE RECEIPTS.
+            </h1>
+            <motion.p
+              style={{
+                opacity: useTransform(progress, [0.55, 0.57], [0, 1]),
+                y: useTransform(progress, [0.55, 0.57], [20, 0])
+              }}
+              className="mt-2 md:mt-4 text-xl md:text-3xl font-mono tracking-widest lowercase font-bold"
+            >
+              my experience :)
+            </motion.p>
+          </motion.div>
         </motion.div>
 
         {/* Layer 5: Flatworld */}
