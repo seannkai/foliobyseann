@@ -17,11 +17,11 @@ interface TableOfContentsProps {
 export default function TableOfContents({ progress }: TableOfContentsProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  // When page is black (0-0.49, 0.89-1.0), TOC is black with white text.
-  // When page is white (0.51-0.87), TOC is white with black text.
-  const bgColor = useTransform(progress, [0, 0.49, 0.51, 0.87, 0.89, 1], ["#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000"]);
-  const textColor = useTransform(progress, [0, 0.49, 0.51, 0.87, 0.89, 1], ["#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff"]);
-  const borderColor = useTransform(progress, [0, 0.49, 0.51, 0.87, 0.89, 1], ["#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff"]);
+  // When page is white (0-0.02, 0.51-0.87), TOC is white with black text.
+  // When page is black (0.05-0.49, 0.89-1.0), TOC is black with white text.
+  const bgColor = useTransform(progress, [0, 0.02, 0.05, 0.49, 0.51, 0.87, 0.89, 1], ["#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000"]);
+  const textColor = useTransform(progress, [0, 0.02, 0.05, 0.49, 0.51, 0.87, 0.89, 1], ["#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff"]);
+  const borderColor = useTransform(progress, [0, 0.02, 0.05, 0.49, 0.51, 0.87, 0.89, 1], ["#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff"]);
 
   const scrollToSection = (progressTarget: number) => {
     const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
