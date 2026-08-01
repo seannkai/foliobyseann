@@ -22,8 +22,6 @@ export default function TableOfContents({ progress }: TableOfContentsProps) {
   const bgColor = useTransform(progress, [0, 0.51, 0.53, 0.85, 0.87, 1], ["#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000"]);
   const textColor = useTransform(progress, [0, 0.51, 0.53, 0.85, 0.87, 1], ["#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff"]);
   const borderColor = useTransform(progress, [0, 0.51, 0.53, 0.85, 0.87, 1], ["#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff"]);
-  const hoverBg = useTransform(progress, [0, 0.51, 0.53, 0.85, 0.87, 1], ["#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff"]);
-  const hoverText = useTransform(progress, [0, 0.51, 0.53, 0.85, 0.87, 1], ["#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000"]);
 
   const scrollToSection = (progressTarget: number) => {
     const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
