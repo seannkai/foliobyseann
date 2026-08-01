@@ -2,6 +2,8 @@ import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import SpreadsheetTexture from './components/SpreadsheetTexture';
 import ReceiptsBackground from './components/ReceiptsBackground';
+import ScrollPrompt from './components/ScrollPrompt';
+import TableOfContents from './components/TableOfContents';
 
 export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -227,6 +229,9 @@ export default function App() {
   return (
     <div ref={containerRef} className="bg-black text-white font-sans selection:bg-[var(--wp-block-synced-color)] selection:text-black h-[2600vh] relative w-full md:cursor-none select-none md:select-auto [-webkit-touch-callout:none] [-webkit-tap-highlight-color:transparent]">
       
+      <ScrollPrompt />
+      <TableOfContents />
+
       {/* Custom Cursor */}
       <motion.div 
         style={{ x: cursorX, y: cursorY, translateX: "-50%", translateY: "-50%" }} 
