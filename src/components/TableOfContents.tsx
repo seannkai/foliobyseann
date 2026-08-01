@@ -4,12 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 const sections = [
   { id: '00', title: 'Title', progress: 0 },
   { id: '01', title: 'Prelude', progress: 0.15 },
-  { id: '02', title: 'Flatworld', progress: 0.35 }, // Adjusted for middle of Flatworld
-  { id: '03', title: 'INFLXD', progress: 0.58 }, // Adjusted
-  { id: '04', title: 'Alorica', progress: 0.70 }, // Adjusted
-  { id: '05', title: 'Concentrix', progress: 0.81 }, // Adjusted
-  { id: '06', title: 'Core Skills', progress: 0.87 }, // Adjusted
-  { id: '07', title: 'Education', progress: 0.94 }, // Adjusted
+  { id: '02', title: 'Career', progress: 0.55 }, // The Receipts
+  { id: '03', title: 'Core Skills', progress: 0.87 },
+  { id: '04', title: 'Education', progress: 0.94 },
+  { id: '05', title: 'About Me', progress: 1.0 }, // Footer
 ];
 
 export default function TableOfContents() {
@@ -80,7 +78,7 @@ export default function TableOfContents() {
                   <button
                     key={section.id}
                     onClick={() => scrollToSection(section.progress)}
-                    className="flex flex-col text-left px-6 py-5 border-b border-black/10 hover:bg-black hover:text-white transition-colors group"
+                    className="flex flex-col text-left px-6 py-5 border-b border-black/10 text-black hover:bg-black hover:text-white transition-colors group"
                   >
                     <div className="flex items-baseline gap-4">
                       <span className="font-mono text-sm font-bold">{section.id}</span>
