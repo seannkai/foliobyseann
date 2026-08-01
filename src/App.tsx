@@ -715,8 +715,8 @@ export default function App() {
             
             {/* About Me Text */}
             <div className="border-l-4 border-black pl-4 md:pl-6 mt-6 md:mt-8 max-w-xl text-left">
-              <p className="text-sm md:text-base lg:text-lg font-mono text-zinc-700 leading-relaxed normal-case">
-                <strong className="text-black">QA, data, automation, ops support, done fast.</strong> Twenty years old, self-taught, ENTP, allergic to doing anything the slow way twice. Hand me your calendar, your backlog, or your spreadsheet mess, I've already rebuilt it before you finish explaining the problem.
+              <p className="text-sm md:text-base lg:text-lg font-sans text-zinc-600 leading-relaxed normal-case font-medium">
+                <strong className="text-black font-bold">QA, data, automation, ops support, done fast.</strong> Twenty years old, self-taught, ENTP, allergic to doing anything the slow way twice. Hand me your calendar, your backlog, or your spreadsheet mess, I've already rebuilt it before you finish explaining the problem.
               </p>
             </div>
           </div>
