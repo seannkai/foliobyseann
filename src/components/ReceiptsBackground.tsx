@@ -6,7 +6,7 @@ interface Props {
 
 // Pre-generate static random positions for 25 receipts
 // We use a fixed seed-like approach by generating it once so they don't jump around on re-renders
-const receipts = Array.from({ length: 30 }).map(() => {
+const receipts = Array.from({ length: 12 }).map(() => {
   const top = -10 + Math.random() * 110;
   const left = -10 + Math.random() * 110;
   const rotate = -40 + Math.random() * 80;

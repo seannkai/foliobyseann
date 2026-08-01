@@ -360,12 +360,13 @@ export default function App() {
         </motion.div>
 
         {/* Layer 4.5: Proof of Work Intro */}
-        <motion.div style={{ clipPath: pClip, scale: pScale }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-4 md:p-8 z-50 bg-white">
+        <motion.div style={{ clipPath: pClip }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-4 md:p-8 z-50 bg-white">
           <ReceiptsBackground progress={progress} />
           
           <motion.div
             style={{ 
-              opacity: useTransform(progress, [0.54, 0.56], [0, 1]) 
+              opacity: useTransform(progress, [0.54, 0.56], [0, 1]),
+              scale: pScale
             }}
             className="flex flex-col items-center z-10 mix-blend-difference text-white relative"
           >
