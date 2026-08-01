@@ -68,7 +68,7 @@ export default function App() {
   const sClip = useTransform(progress, [0.39, 0.41, 0.54, 0.55], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
   const sScale = useTransform(progress, [0.40, 0.51], [0.95, 1.1]);
   const codeWrapBg = useTransform(progress, [0.49, 0.51], ["transparent", "#ffffff"]);
-  const codeWrapScale = useTransform(progress, [0.49, 0.52], [1, 150]);
+  const codeWrapScale = useTransform(progress, [0.49, 0.55], [1, 150]);
 
   // "CODE" Highlight & Matrix Scramble Animation
   const codeClip = useTransform(progress, [0.42, 0.44], ["inset(0 0 0 100%)", "inset(0 0 0 0%)"]);
