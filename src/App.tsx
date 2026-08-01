@@ -398,6 +398,7 @@ export default function App() {
              {/* Left Text */}
              <div className="flex-1 p-6 md:p-12 lg:p-16 border-b-4 md:border-b-0 md:border-r-4 border-black flex flex-col justify-center relative bg-white">
                 <h3 className="text-4xl md:text-5xl lg:text-7xl font-bold uppercase tracking-tighter mb-4 leading-none">Flatworld</h3>
+                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">Data Entry Executive / Product Management Associate</div>
                 <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">Wrote TypeScript Office Scripts to process 8,000 SKUs.</p>
                 <div className="inline-block bg-black text-white px-3 py-2 self-start font-bold text-xs md:text-sm uppercase tracking-widest">
                   It cut processing time by two-thirds.
@@ -439,6 +440,7 @@ export default function App() {
              {/* Left Text */}
              <div className="flex-1 p-6 md:p-12 lg:p-16 border-b-4 md:border-b-0 md:border-r-4 border-black flex flex-col justify-center bg-white text-black">
                 <h3 className="text-4xl md:text-5xl lg:text-7xl font-bold uppercase tracking-tighter mb-4 leading-none">INFLXD</h3>
+                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">Transcription Quality Analyst / Data Annotator</div>
                 <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">Corrected AI output for accuracy.</p>
                 <div className="inline-block bg-black text-white px-3 py-2 self-start font-bold text-xs md:text-sm uppercase tracking-widest">
                   Maintained strict SLAs.
@@ -489,6 +491,7 @@ export default function App() {
               {/* Top Text (Centered) */}
               <div className="text-center mb-8 flex flex-col items-center text-black">
                  <h3 className="text-4xl md:text-5xl lg:text-7xl font-bold uppercase tracking-tighter mb-4 leading-none text-black">Alorica</h3>
+                 <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">Technical Support Representative → Temporary SME</div>
                  <p className="text-xl md:text-3xl text-zinc-300 max-w-2xl font-medium leading-tight mb-6">
                    Managed escalations and directed the floor.
                  </p>
@@ -560,8 +563,9 @@ export default function App() {
                 </motion.div>
              </motion.div>
              {/* Right Text */}
-             <div className="flex-1 p-6 md:p-12 lg:p-16 flex flex-col justify-center bg-white text-black">
+             <div className="flex-1 p-6 md:p-12 lg:p-16 border-b-4 md:border-b-0 md:border-r-0 border-black flex flex-col justify-center bg-white text-black">
                 <h3 className="text-4xl md:text-5xl lg:text-7xl font-bold uppercase tracking-tighter mb-4 leading-none">Concentrix</h3>
+                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">Customer Service Representative → Reporting Analyst Intern</div>
                 <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">Built glidepath models from performance data.</p>
                 <div className="inline-block bg-black text-white px-3 py-2 self-start font-bold text-xs md:text-sm uppercase tracking-widest">
                   It dropped bounce rates drastically.
