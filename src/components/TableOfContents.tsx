@@ -67,7 +67,7 @@ export default function TableOfContents({ progress }: TableOfContentsProps) {
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               style={{ backgroundColor: bgColor, borderLeftColor: borderColor }}
-              className="fixed top-0 right-0 h-full w-full md:w-[400px] border-l-4 z-[10001] shadow-2xl overflow-y-auto flex flex-col"
+              className="fixed top-0 right-0 h-full w-[300px] max-w-[85vw] md:w-[400px] md:max-w-none border-l-4 z-[10001] shadow-2xl overflow-y-auto flex flex-col"
             >
               {/* Close Button */}
               <motion.div 
