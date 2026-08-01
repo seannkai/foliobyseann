@@ -29,12 +29,12 @@ export default function ScrollPrompt() {
         setShow(false);
         clearTimeout(timeoutId);
       } else {
-        resetTimer(30000); // 30 seconds after any scroll
+        resetTimer(15000); // 15 seconds after any scroll
       }
     };
 
-    // Initial 10-second timer
-    resetTimer(10000);
+    // Initial 5-second timer
+    resetTimer(5000);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
@@ -58,10 +58,10 @@ export default function ScrollPrompt() {
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             className="flex flex-col items-center -space-y-3"
           >
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter" className="rotate-180 md:rotate-0">
               <path d="M7 10l5 5 5-5" />
             </svg>
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter" className="opacity-50">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter" className="opacity-50 rotate-180 md:rotate-0">
               <path d="M7 10l5 5 5-5" />
             </svg>
           </motion.div>
