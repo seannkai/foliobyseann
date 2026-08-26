@@ -1,12 +1,13 @@
-import type { IncomingMessage, ServerResponse } from 'http';
 import { parseCookies, verifySessionToken, SESSION_COOKIE_NAME } from '../../lib/auth';
 import { getLockdownState, setLockdownState } from '../../lib/kv';
 
-interface ExtendedRequest extends IncomingMessage {
-  body?: any;
-}
+export default async function handler(req: any, res: any) {
+  if (req.method === 'OPTIONS') {
+    res.statusCode = 204;
+    res.end();
+    return;
+  }
 
-export default async function handler(req: ExtendedRequest, res: ServerResponse) {
   if (req.method !== 'POST') {
     res.statusCode = 405;
     res.setHeader('Content-Type', 'application/json');
@@ -14,52 +15,52 @@ export default async function handler(req: ExtendedRequest, res: ServerResponse)
     return;
   }
 
-  const cookies = parseCookies(req.headers.cookie);
-  const sessionToken = cookies[SESSION_COOKIE_NAME];
-  const isAuthenticated = verifySessionToken(sessionToken);
+  try {
+    const cookies = parseCookies(req.headers.cookie);
+    const sessionToken = cookies[SESSION_COOKIE_NAME];
+    const isAuthenticated = verifySessionToken(sessionToken);
 
-  if (!isAuthenticated) {
-    res.statusCode = 401;
+    if (!isAuthenticated) {
+      res.statusCode = 401;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ error: 'Unauthorized' }));
+      return;
+    }
+
+    let body = req.body;
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch {
+        body = {};
+      }
+    } else if (!body) {
+      body = {};
+    }
+
+    const current = await getLockdownState();
+    let newState: boolean;
+    if (typeof body?.enabled === 'boolean') {
+      newState = body.enabled;
+    } else {
+      newState = !current;
+    }
+
+    await setLockdownState(newState);
+
+    res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ error: 'Unauthorized' }));
-    return;
+    res.end(
+      JSON.stringify({
+        success: true,
+        lockdown: newState,
+        message: `Anti-scraper lockdown is now ${newState ? 'ON' : 'OFF'}`,
+      })
+    );
+  } catch (err: any) {
+    console.error('Unhandled toggle error:', err);
+    res.statusCode = 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ error: 'Internal server error' }));
   }
-
-  // Parse body if supplied
-  let body = req.body;
-  if (!body) {
-    body = await new Promise((resolve) => {
-      let data = '';
-      req.on('data', (chunk) => {
-        data += chunk;
-      });
-      req.on('end', () => {
-        try {
-          resolve(JSON.parse(data || '{}'));
-        } catch {
-          resolve({});
-        }
-      });
-    });
-  }
-
-  const current = await getLockdownState();
-  let newState: boolean;
-  if (typeof body?.enabled === 'boolean') {
-    newState = body.enabled;
-  } else {
-    newState = !current;
-  }
-
-  await setLockdownState(newState);
-
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'application/json');
-  res.end(
-    JSON.stringify({
-      success: true,
-      lockdown: newState,
-      message: `Anti-scraper lockdown is now ${newState ? 'ON' : 'OFF'}`,
-    })
-  );
 }

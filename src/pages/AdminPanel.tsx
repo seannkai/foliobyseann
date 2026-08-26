@@ -53,7 +53,12 @@ export default function AdminPanel() {
         body: JSON.stringify({ password }),
       });
 
-      const data = await res.json();
+      let data: any = {};
+      try {
+        data = await res.json();
+      } catch {
+        data = { error: `Server error (${res.status})` };
+      }
 
       if (!res.ok) {
         setError(data.error || 'Authentication failed');
@@ -64,13 +69,17 @@ export default function AdminPanel() {
       setPassword('');
       
       // Fetch fresh session state
-      const sessionRes = await fetch('/api/admin/session');
-      if (sessionRes.ok) {
-        const sessionData: SessionStatus = await sessionRes.json();
-        setLockdown(sessionData.lockdown ?? true);
+      try {
+        const sessionRes = await fetch('/api/admin/session');
+        if (sessionRes.ok) {
+          const sessionData: SessionStatus = await sessionRes.json();
+          setLockdown(sessionData.lockdown ?? true);
+        }
+      } catch {
+        // Non-fatal
       }
     } catch {
-      setError('Network error. Please try again.');
+      setError('Network error connecting to API. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -89,7 +98,12 @@ export default function AdminPanel() {
         body: JSON.stringify({ enabled: !lockdown }),
       });
 
-      const data = await res.json();
+      let data: any = {};
+      try {
+        data = await res.json();
+      } catch {
+        data = { error: `Server error (${res.status})` };
+      }
 
       if (!res.ok) {
         if (res.status === 401) {

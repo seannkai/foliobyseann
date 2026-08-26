@@ -20,19 +20,18 @@ export const config = {
     /*
      * Match all request paths except:
      * - /api/* (API routes)
-     * - /seannkaipanel (Admin panel page)
-     * - /_next/*, /static/*, /assets/* (asset paths)
-     * - favicon, images, fonts, xlsx, svg
+     * - /seannkaipanel (Admin panel)
+     * - static assets (.js, .css, images, fonts, xlsx)
      */
-    '/((?!api|_next|static|assets|foliobyseann-favicon|seannomac-avatar|icons\\.svg|.*\\.xlsx|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.css|.*\\.js).*)',
+    '/((?!api|_next|static|assets|favicon|.*\\.(?:jpg|jpeg|png|svg|ico|css|js|map|json|xlsx|txt|woff|woff2)).*)',
   ],
 };
 
 export default async function middleware(request: Request) {
   const url = new URL(request.url);
 
-  // Allow admin panel and API unconditionally
-  if (url.pathname.startsWith('/seannkaipanel') || url.pathname.startsWith('/api/')) {
+  // Never intercept API routes or admin panel
+  if (url.pathname.startsWith('/api') || url.pathname.startsWith('/seannkaipanel')) {
     return;
   }
 
@@ -44,15 +43,15 @@ export default async function middleware(request: Request) {
       if (val !== null && val !== undefined) {
         isLockdown = val === true || val === 'true' || val === '1';
       }
-    } catch (err) {
-      console.error('Error fetching lockdown state in middleware:', err);
+    } catch {
+      // If redis check fails, preserve default lockdown
     }
   }
 
   const userAgent = request.headers.get('user-agent') || '';
 
   if (isLockdown) {
-    // If a scraper/bot tries to access when lockdown is active, block it
+    // If a scraper / automated crawler visits while lockdown is ON, block with 403
     if (BOT_USER_AGENTS.test(userAgent)) {
       return new Response('Access denied: Site is currently protected by anti-scraper lockdown protocol.', {
         status: 403,
@@ -63,25 +62,8 @@ export default async function middleware(request: Request) {
         },
       });
     }
-
-    // For standard traffic, enforce noindex/lockdown headers
-    const response = new Response(null, {
-      headers: {
-        'x-middleware-next': '1',
-        'X-Robots-Tag': 'noindex, nofollow, noarchive, nosnippet',
-        'X-Lockdown-Status': 'active',
-      },
-    });
-    return response;
   }
 
-  // When lockdown is OFF, allow scraping and clear strict bot tags
-  const response = new Response(null, {
-    headers: {
-      'x-middleware-next': '1',
-      'X-Robots-Tag': 'all',
-      'X-Lockdown-Status': 'disabled',
-    },
-  });
-  return response;
+  // Allow standard requests to pass through cleanly
+  return;
 }
