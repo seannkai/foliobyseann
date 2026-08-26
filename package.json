@@ -13,7 +13,7 @@
     "@phosphor-icons/react": "^2.1.10",
     "@upstash/redis": "^1.38.3",
     "@vercel/kv": "^3.0.0",
-    "bcryptjs": "^3.0.3",
+    "bcrypt-ts": "^9.0.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.43.0",
     "react": "^19.2.8",
@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
-    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",

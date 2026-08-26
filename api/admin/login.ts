@@ -1,5 +1,5 @@
 import { Redis } from '@upstash/redis';
-import bcrypt from 'bcryptjs';
+import { compareSync } from 'bcrypt-ts';
 
 export const config = {
   runtime: 'edge',
@@ -136,8 +136,8 @@ export default async function handler(request: Request) {
       );
     }
 
-    // Compare with bcrypt
-    const isValid = bcrypt.compareSync(password, storedHash);
+    // Compare with Edge-native bcrypt-ts
+    const isValid = compareSync(password, storedHash);
     if (!isValid) {
       return new Response(
         JSON.stringify({
