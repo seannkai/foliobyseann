@@ -1,4 +1,4 @@
-import { readLockdownState } from './lib/storage.ts';
+import { readLockdownState } from './lib/storage';
 
 // Bot / scraper detection pattern
 const BOT_USER_AGENTS =

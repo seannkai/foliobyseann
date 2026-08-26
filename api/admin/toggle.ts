@@ -1,4 +1,4 @@
-import { readLockdownState, writeLockdownState } from '../../lib/storage.ts';
+import { readLockdownState, writeLockdownState } from '../../lib/storage';
 
 export const config = {
   runtime: 'edge',
