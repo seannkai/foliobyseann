@@ -1,22 +1,27 @@
-import { generateClearCookieHeader } from '../../lib/auth.ts';
+export const config = {
+  runtime: 'edge',
+};
 
-export default async function handler(req: any, res: any) {
-  if (req.method === 'OPTIONS') {
-    res.statusCode = 204;
-    res.end();
-    return;
+const SESSION_COOKIE_NAME = 'panel_session';
+
+export default async function handler(request: Request) {
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { status: 204 });
   }
 
-  if (req.method !== 'POST' && req.method !== 'GET') {
-    res.statusCode = 405;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ error: 'Method not allowed' }));
-    return;
-  }
+  const isProd = process.env.NODE_ENV === 'production' || request.url.startsWith('https:');
+  const clearCookie = `${SESSION_COOKIE_NAME}=; Path=/; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; ${
+    isProd ? 'Secure;' : ''
+  } SameSite=Strict`;
 
-  const cookieHeader = generateClearCookieHeader();
-  res.statusCode = 200;
-  res.setHeader('Set-Cookie', cookieHeader);
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify({ success: true, message: 'Logged out successfully' }));
+  return new Response(
+    JSON.stringify({ success: true, message: 'Logged out successfully' }),
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Set-Cookie': clearCookie,
+      },
+    }
+  );
 }
