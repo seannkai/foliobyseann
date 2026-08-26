@@ -1,5 +1,5 @@
-import { verifyPassword, createSessionToken, generateSessionCookieHeader } from '../../lib/auth';
-import { checkRateLimit } from '../../lib/kv';
+import { verifyPassword, createSessionToken, generateSessionCookieHeader } from '../../lib/auth.ts';
+import { checkRateLimit } from '../../lib/kv.ts';
 
 export default async function handler(req: any, res: any) {
   // Handle CORS / preflight if necessary
@@ -18,7 +18,7 @@ export default async function handler(req: any, res: any) {
 
   try {
     // Extract client IP
-    const forwarded = req.headers['x-forwarded-for'];
+    const forwarded = req.headers ? (req.headers['x-forwarded-for'] || req.headers['x-real-ip']) : null;
     const rawIp = Array.isArray(forwarded) ? forwarded[0] : forwarded;
     const clientIp = (rawIp ? rawIp.split(',')[0].trim() : req.socket?.remoteAddress) || '127.0.0.1';
 

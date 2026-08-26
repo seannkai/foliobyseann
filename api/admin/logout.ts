@@ -1,7 +1,12 @@
-import type { IncomingMessage, ServerResponse } from 'http';
-import { generateClearCookieHeader } from '../../lib/auth';
+import { generateClearCookieHeader } from '../../lib/auth.ts';
 
-export default async function handler(req: IncomingMessage, res: ServerResponse) {
+export default async function handler(req: any, res: any) {
+  if (req.method === 'OPTIONS') {
+    res.statusCode = 204;
+    res.end();
+    return;
+  }
+
   if (req.method !== 'POST' && req.method !== 'GET') {
     res.statusCode = 405;
     res.setHeader('Content-Type', 'application/json');

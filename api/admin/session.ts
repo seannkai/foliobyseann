@@ -1,5 +1,5 @@
-import { parseCookies, verifySessionToken, SESSION_COOKIE_NAME } from '../../lib/auth';
-import { getLockdownState } from '../../lib/kv';
+import { parseCookies, verifySessionToken, SESSION_COOKIE_NAME } from '../../lib/auth.ts';
+import { getLockdownState } from '../../lib/kv.ts';
 
 export default async function handler(req: any, res: any) {
   if (req.method === 'OPTIONS') {
@@ -16,7 +16,7 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const cookies = parseCookies(req.headers.cookie);
+    const cookies = parseCookies(req.headers?.cookie);
     const sessionToken = cookies[SESSION_COOKIE_NAME];
     const isAuthenticated = verifySessionToken(sessionToken);
 
