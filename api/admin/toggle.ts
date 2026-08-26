@@ -1,4 +1,4 @@
-import { Redis } from '@upstash/redis';
+import { readLockdownState, writeLockdownState } from '../../lib/storage.ts';
 
 export const config = {
   runtime: 'edge',
@@ -82,40 +82,24 @@ export default async function handler(request: Request) {
     body = {};
   }
 
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-  let current = true;
-  let redis: Redis | null = null;
-  if (url && token) {
-    redis = new Redis({ url, token });
-    try {
-      const val = await redis.get<boolean | string>('site_lockdown_enabled');
-      if (val !== null && val !== undefined) {
-        current = val === true || val === 'true' || val === '1';
-      }
-    } catch {}
-  }
-
-  let newState: boolean;
+  const { isLockdown } = await readLockdownState();
+  let targetState: boolean;
   if (typeof body?.enabled === 'boolean') {
-    newState = body.enabled;
+    targetState = body.enabled;
   } else {
-    newState = !current;
+    targetState = !isLockdown;
   }
 
-  if (redis) {
-    try {
-      await redis.set('site_lockdown_enabled', newState);
-    } catch (e) {
-      console.error('Failed to set lockdown in redis:', e);
-    }
-  }
+  const writeResult = await writeLockdownState(targetState);
 
   return new Response(
     JSON.stringify({
-      success: true,
-      lockdown: newState,
-      message: `Anti-scraper lockdown is now ${newState ? 'ON' : 'OFF'}`,
+      success: writeResult.success,
+      lockdown: targetState,
+      hasStorage: writeResult.hasStorage,
+      message: `Anti-scraper lockdown is now ${targetState ? 'ON' : 'OFF'}${
+        !writeResult.hasStorage ? ' (Warning: No KV environment variables detected in Vercel)' : ''
+      }`,
     }),
     {
       status: 200,

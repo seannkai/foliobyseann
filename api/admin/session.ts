@@ -1,4 +1,4 @@
-import { Redis } from '@upstash/redis';
+import { readLockdownState } from '../../lib/storage.ts';
 
 export const config = {
   runtime: 'edge',
@@ -68,23 +68,17 @@ export default async function handler(request: Request) {
     });
   }
 
-  let isLockdown = true;
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (url && token) {
-    try {
-      const redis = new Redis({ url, token });
-      const val = await redis.get<boolean | string>('site_lockdown_enabled');
-      if (val !== null && val !== undefined) {
-        isLockdown = val === true || val === 'true' || val === '1';
-      }
-    } catch (e) {
-      console.error('Redis get lockdown error:', e);
-    }
-  }
+  const { isLockdown, hasStorage } = await readLockdownState();
 
-  return new Response(JSON.stringify({ authenticated: true, lockdown: isLockdown }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' },
-  });
+  return new Response(
+    JSON.stringify({
+      authenticated: true,
+      lockdown: isLockdown,
+      hasStorage,
+    }),
+    {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    }
+  );
 }

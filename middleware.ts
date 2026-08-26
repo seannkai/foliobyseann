@@ -1,15 +1,4 @@
-import { Redis } from '@upstash/redis';
-
-const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-
-let redis: Redis | null = null;
-if (redisUrl && redisToken) {
-  redis = new Redis({
-    url: redisUrl,
-    token: redisToken,
-  });
-}
+import { readLockdownState } from './lib/storage.ts';
 
 // Bot / scraper detection pattern
 const BOT_USER_AGENTS =
@@ -21,7 +10,7 @@ export const config = {
      * Match all request paths except:
      * - /api/* (API routes)
      * - /seannkaipanel (Admin panel)
-     * - static assets (.js, .css, images, fonts, xlsx)
+     * - static assets (.js, .css, images, fonts, xlsx, txt)
      */
     '/((?!api|_next|static|assets|favicon|.*\\.(?:jpg|jpeg|png|svg|ico|css|js|map|json|xlsx|txt|woff|woff2)).*)',
   ],
@@ -35,19 +24,7 @@ export default async function middleware(request: Request) {
     return;
   }
 
-  let isLockdown = true; // Default state
-
-  if (redis) {
-    try {
-      const val = await redis.get<boolean | string>('site_lockdown_enabled');
-      if (val !== null && val !== undefined) {
-        isLockdown = val === true || val === 'true' || val === '1';
-      }
-    } catch {
-      // If redis check fails, preserve default lockdown
-    }
-  }
-
+  const { isLockdown } = await readLockdownState();
   const userAgent = request.headers.get('user-agent') || '';
 
   if (isLockdown) {
