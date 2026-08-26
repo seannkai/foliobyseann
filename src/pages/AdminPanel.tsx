@@ -3,12 +3,15 @@ import { useState, useEffect } from 'react';
 interface SessionStatus {
   authenticated: boolean;
   lockdown: boolean | null;
+  hasStorage?: boolean;
+  allowlist?: string[];
 }
 
 export default function AdminPanel() {
   const [loading, setLoading] = useState<boolean>(true);
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [lockdown, setLockdown] = useState<boolean>(true);
+  const [allowlist, setAllowlist] = useState<string[]>(['claude']);
   const [password, setPassword] = useState<string>('');
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [toggling, setToggling] = useState<boolean>(false);
@@ -27,6 +30,7 @@ export default function AdminPanel() {
           if (data.authenticated) {
             setAuthenticated(true);
             setLockdown(data.lockdown ?? true);
+            if (data.allowlist) setAllowlist(data.allowlist);
           }
         }
       } catch (err) {
@@ -74,6 +78,7 @@ export default function AdminPanel() {
         if (sessionRes.ok) {
           const sessionData: SessionStatus = await sessionRes.json();
           setLockdown(sessionData.lockdown ?? true);
+          if (sessionData.allowlist) setAllowlist(sessionData.allowlist);
         }
       } catch {
         // Non-fatal
@@ -241,7 +246,7 @@ export default function AdminPanel() {
             </div>
           </div>
         ) : (
-          /* Authenticated Controls Container - Structured modularly for future sections */
+          /* Authenticated Controls Container */
           <div className="w-full flex flex-col gap-8">
             {/* Section: Anti-Scraper Lockdown Module */}
             <div className="w-full border-4 border-white bg-black p-6 md:p-10 shadow-[8px_8px_0px_white]">
@@ -265,8 +270,8 @@ export default function AdminPanel() {
 
               <p className="text-xs md:text-sm text-zinc-300 mb-8 leading-relaxed">
                 {lockdown
-                  ? 'Active: All AI bots, web scrapers, curl/python crawlers, and automated indexing engines are blocked at the edge. Meta tags enforce strict noindex / nosnippet across the entire portfolio.'
-                  : 'Disabled: Anti-scraper blocking is suspended. Crawlers and search engine indexing are allowed to access the site normally.'}
+                  ? 'Active: General AI bots, scrapers, and crawlers are blocked at the edge with 403 Forbidden. Allowlisted user agents (e.g. ClaudeBot) continue to have access.'
+                  : 'Disabled: Anti-scraper blocking is suspended. Crawlers, scrapers, and indexing engines are allowed to access the site.'}
               </p>
 
               <div className="flex flex-col gap-4">
@@ -294,9 +299,38 @@ export default function AdminPanel() {
               </div>
             </div>
 
-            {/* Placeholder / Extension Slot for future modular panel features */}
-            <div className="border-2 border-dashed border-zinc-800 p-4 text-center text-xs text-zinc-600 uppercase tracking-widest">
-              [ Modular Architecture: Future panel modules can be mounted here ]
+            {/* Section: Allowlisted User-Agents */}
+            <div className="w-full border-4 border-zinc-800 bg-black p-6 md:p-8 shadow-[8px_8px_0px_#222]">
+              <div className="flex justify-between items-start border-b-2 border-zinc-800 pb-3 mb-4">
+                <div>
+                  <div className="text-xs text-zinc-500 uppercase tracking-widest">EXCEPTION RULES [02]</div>
+                  <h3 className="text-lg font-bold uppercase tracking-tight mt-0.5">
+                    Allowlisted User-Agents
+                  </h3>
+                </div>
+                <div className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest border border-zinc-700 bg-zinc-900 text-zinc-300">
+                  {allowlist.length} ACTIVE
+                </div>
+              </div>
+
+              <p className="text-[11px] text-zinc-400 mb-4 leading-relaxed">
+                Requests matching these User-Agent substrings bypass the lockdown filter and are permitted through even when lockdown protocol is active.
+              </p>
+
+              <div className="flex flex-wrap gap-2 mb-4">
+                {allowlist.map((ua, index) => (
+                  <span
+                    key={index}
+                    className="bg-zinc-900 border border-zinc-600 text-zinc-200 text-xs px-3 py-1 font-mono uppercase tracking-wider"
+                  >
+                    ✓ {ua}
+                  </span>
+                ))}
+              </div>
+
+              <div className="border-t border-zinc-900 pt-3 text-[10px] text-zinc-500 uppercase tracking-widest">
+                [ Note: User-Agent based — not cryptographically verified ]
+              </div>
             </div>
           </div>
         )}

@@ -1,4 +1,4 @@
-import { readLockdownState } from '../../lib/storage';
+import { readLockdownState, readAllowlist } from '../../lib/storage';
 
 export const config = {
   runtime: 'edge',
@@ -69,12 +69,14 @@ export default async function handler(request: Request) {
   }
 
   const { isLockdown, hasStorage } = await readLockdownState();
+  const allowlist = await readAllowlist();
 
   return new Response(
     JSON.stringify({
       authenticated: true,
       lockdown: isLockdown,
       hasStorage,
+      allowlist,
     }),
     {
       status: 200,

@@ -1,8 +1,8 @@
-import { readLockdownState } from './lib/storage';
+import { readLockdownState, readAllowlist } from './lib/storage';
 
-// Bot / scraper detection pattern
+// Bot / scraper detection pattern (excluding claude which is handled by allowlist)
 const BOT_USER_AGENTS =
-  /bot|spider|crawl|scraper|curl|wget|python|httpclient|postman|chatgpt|gptbot|anthropic|claude|bytespider|google-extended|cohere|diffbot|facebookexternalhit|ia_archiver|semrush|ahrefs|mj12bot|dotbot|yandexbot|ccbot/i;
+  /bot|spider|crawl|scraper|curl|wget|python|httpclient|postman|chatgpt|gptbot|bytespider|google-extended|cohere|diffbot|facebookexternalhit|ia_archiver|semrush|ahrefs|mj12bot|dotbot|yandexbot|ccbot/i;
 
 export const config = {
   matcher: [
@@ -26,14 +26,23 @@ export default async function middleware(request: Request) {
 
   const { isLockdown } = await readLockdownState();
   const userAgent = request.headers.get('user-agent') || '';
+  const userAgentLower = userAgent.toLowerCase();
 
   if (isLockdown) {
-    // If a scraper / automated crawler visits while lockdown is ON, block with 403
+    const allowlist = await readAllowlist();
+    const isAllowlisted = allowlist.some((item) => userAgentLower.includes(item.toLowerCase()));
+
+    // If request matches allowlist, let through even during lockdown
+    if (isAllowlisted) {
+      return;
+    }
+
+    // If bot / crawler and not allowlisted, block with 403
     if (BOT_USER_AGENTS.test(userAgent)) {
       return new Response('Access denied: Site is currently protected by anti-scraper lockdown protocol.', {
         status: 403,
         headers: {
-          'Content-Type': 'text/plain',
+          'Content-Type': 'text/plain; charset=utf-8',
           'X-Robots-Tag': 'noindex, nofollow, noarchive, nosnippet',
           'X-Lockdown-Status': 'active',
         },
@@ -41,6 +50,6 @@ export default async function middleware(request: Request) {
     }
   }
 
-  // Allow standard requests to pass through cleanly
+  // Allow standard requests through
   return;
 }
