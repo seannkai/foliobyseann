@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 
 const App = lazy(() => import('./App.tsx'))
+const AdminPanel = lazy(() => import('./pages/AdminPanel.tsx'))
 
 const Loader = () => (
   <div className="fixed inset-0 bg-black text-white flex flex-col items-center justify-center font-mono z-[99999]">
@@ -15,10 +16,12 @@ const Loader = () => (
   </div>
 )
 
+const isPanelRoute = typeof window !== 'undefined' && window.location.pathname.startsWith('/seannkaipanel')
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Suspense fallback={<Loader />}>
-      <App />
+      {isPanelRoute ? <AdminPanel /> : <App />}
     </Suspense>
   </StrictMode>,
 )

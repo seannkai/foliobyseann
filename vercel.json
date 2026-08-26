@@ -25,5 +25,11 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/seannkaipanel",
+      "destination": "/index.html"
+    }
   ]
 }
