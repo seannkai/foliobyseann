@@ -8,7 +8,7 @@ const SESSION_COOKIE_NAME = 'panel_session';
 const SESSION_MAX_AGE_SECONDS = 86400;
 
 function getSessionSecret(): string {
-  return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD_HASH || 'fallback-secret';
+  return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD_HASH || '';
 }
 
 async function signHMAC(payload: string, secret: string): Promise<string> {

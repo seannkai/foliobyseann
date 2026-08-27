@@ -9,7 +9,11 @@ const SESSION_COOKIE_NAME = 'panel_session';
 const SESSION_MAX_AGE_SECONDS = 86400; // 24 hours
 
 function getSessionSecret(): string {
-  return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD_HASH || 'fallback-secret';
+  const secret = process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD_HASH;
+  if (!secret) {
+    throw new Error('ADMIN_SESSION_SECRET or ADMIN_PASSWORD_HASH is not configured');
+  }
+  return secret;
 }
 
 async function signHMAC(payload: string, secret: string): Promise<string> {
