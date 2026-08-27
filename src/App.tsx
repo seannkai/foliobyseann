@@ -4,8 +4,10 @@ import SpreadsheetTexture from './components/SpreadsheetTexture';
 import ReceiptsBackground from './components/ReceiptsBackground';
 import ScrollPrompt from './components/ScrollPrompt';
 import TableOfContents from './components/TableOfContents';
+import CaseStudyModal from './components/CaseStudyModal';
 
 export default function App() {
+  const [isCaseStudyOpen, setIsCaseStudyOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: rawProgress } = useScroll({ 
     target: containerRef, 
@@ -385,7 +387,7 @@ export default function App() {
           </motion.div>
         </motion.div>
 
-        {/* Layer 5: Flatworld */}
+        {/* Layer 5: Flatworld / Flinn Scientific */}
         <motion.div style={{ clipPath: fClip, y: fY }} className="absolute inset-0 z-30 flex items-center justify-center p-4 md:p-8 pointer-events-none">
            <div className="w-full h-full max-w-7xl bg-white flex flex-col border-4 border-black overflow-hidden relative">
            
@@ -396,12 +398,37 @@ export default function App() {
            
            <div className="flex flex-col md:flex-row flex-1 overflow-hidden relative z-10">
              {/* Left Text */}
-             <div className="flex-1 p-6 md:p-12 lg:p-16 border-b-4 md:border-b-0 md:border-r-4 border-black flex flex-col justify-center relative bg-white">
-                <h3 className="text-4xl md:text-5xl lg:text-7xl font-bold uppercase tracking-tighter mb-4 leading-none">Flatworld</h3>
-                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">Data Entry Executive / Product Management Associate</div>
-                <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">Wrote TypeScript Office Scripts to process 8,000 SKUs.</p>
-                <div className="inline-block bg-black text-white px-3 py-2 self-start font-bold text-xs md:text-sm uppercase tracking-widest">
-                  It cut processing time by two-thirds.
+             <div className="flex-1 p-6 md:p-12 lg:p-16 border-b-4 md:border-b-0 md:border-r-4 border-black flex flex-col justify-center relative bg-white text-black">
+                <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-4 leading-none text-black">Flatworld / Flinn Scientific</h3>
+                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">Data Entry Associate → Project Lead</div>
+                <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">Wrote TypeScript Office Scripts & Claude MCP scrapers to process 8,000 SKUs.</p>
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="inline-block bg-black text-white px-3 py-2 font-bold text-xs md:text-sm uppercase tracking-widest">
+                    Finished 4 months ahead of schedule.
+                  </div>
+                  <button
+                    onClick={() => setIsCaseStudyOpen(true)}
+                    className="pointer-events-auto inline-flex items-center gap-2 border-2 border-black bg-black hover:bg-zinc-800 text-white px-3 py-2 font-mono font-bold text-xs md:text-sm uppercase tracking-widest transition-colors shadow-[3px_3px_0px_rgba(0,0,0,0.3)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+                  >
+                    <span>View Case Study Breakdown</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square">
+                      <line x1="7" y1="17" x2="17" y2="7" />
+                      <polyline points="7 7 17 7 17 17" />
+                    </svg>
+                  </button>
+                  <a
+                    href="https://docs.google.com/spreadsheets/d/1IKf3vmdh52uL-qnp_LxbFvr_8n_m6QFr6bTpyASTTeI/edit?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pointer-events-auto inline-flex items-center gap-2 border-2 border-black bg-white hover:bg-black text-black hover:text-white px-3 py-2 font-mono font-bold text-xs md:text-sm uppercase tracking-widest transition-colors shadow-[3px_3px_0px_black] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+                  >
+                    <span>Google Sheet</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                  </a>
                 </div>
              </div>
              {/* Right Visual */}
@@ -409,9 +436,27 @@ export default function App() {
                 <SpreadsheetTexture />
                 <motion.div style={{ x: parallaxX, y: parallaxY }} className="w-full aspect-video border-4 border-black flex flex-col p-4 md:p-6 font-mono text-[10px] md:text-xs overflow-hidden relative shadow-[10px_10px_0px_black] z-10 bg-white text-black">
                   <div className="absolute inset-0 bg-white/90 flex items-center justify-center p-4 backdrop-blur-[1px] z-10">
-                    <div className="font-bold text-sm md:text-xl tracking-widest border-2 border-black p-4 md:p-8 shadow-[0_0_15px_rgba(0,0,0,0.3)] text-center bg-white text-black">
-                      &gt; SCRIPT_EXEC_SUCCESS<br/>
-                      &gt; 8,000 SKUs PROCESSED
+                    <div className="font-bold text-sm md:text-xl tracking-widest border-2 border-black p-4 md:p-8 shadow-[0_0_15px_rgba(0,0,0,0.3)] text-center bg-white text-black flex flex-col items-center gap-3">
+                      <div>
+                        &gt; SCRIPT_EXEC_SUCCESS<br/>
+                        &gt; 8,000 SKUs PROCESSED
+                      </div>
+                      <div className="flex flex-wrap gap-2 justify-center">
+                        <button
+                          onClick={() => setIsCaseStudyOpen(true)}
+                          className="pointer-events-auto inline-flex items-center gap-1.5 bg-black hover:bg-zinc-800 text-white px-3 py-1.5 text-xs font-mono font-bold tracking-wider border border-black uppercase transition-colors"
+                        >
+                          <span>Open Dossier ↗</span>
+                        </button>
+                        <a
+                          href="https://docs.google.com/spreadsheets/d/1IKf3vmdh52uL-qnp_LxbFvr_8n_m6QFr6bTpyASTTeI/edit?usp=sharing"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="pointer-events-auto inline-flex items-center gap-1.5 bg-white hover:bg-black text-black hover:text-white px-3 py-1.5 text-xs font-mono font-bold tracking-wider border border-black uppercase transition-colors"
+                        >
+                          <span>Live Sheet ↗</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                   <div className="flex border-b-2 border-zinc-300 pb-2 md:pb-4 mb-2 md:mb-4 gap-2 md:gap-4 text-zinc-500">
@@ -439,9 +484,9 @@ export default function App() {
            <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
              {/* Left Text */}
              <div className="flex-1 p-6 md:p-12 lg:p-16 border-b-4 md:border-b-0 md:border-r-4 border-black flex flex-col justify-center bg-white text-black">
-                <h3 className="text-4xl md:text-5xl lg:text-7xl font-bold uppercase tracking-tighter mb-4 leading-none">INFLXD</h3>
+                <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-4 leading-none text-black">INFLXD</h3>
                 <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">Transcription Quality Analyst / Data Annotator</div>
-                <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">Corrected AI output for accuracy.</p>
+                <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">Corrected AI output for accuracy and domain precision.</p>
                 <div className="inline-block bg-black text-white px-3 py-2 self-start font-bold text-xs md:text-sm uppercase tracking-widest">
                   Maintained strict SLAs.
                 </div>
@@ -479,7 +524,7 @@ export default function App() {
            </div>
         </motion.div>
 
-        {/* Layer 7: Alorica */}
+        {/* Layer 7: Alorica / Google Fi Wireless */}
         <motion.div style={{ clipPath: aClip, y: aY }} className="absolute inset-0 z-30 flex items-center justify-center p-4 md:p-8 pointer-events-none">
            <div className="w-full h-full max-w-7xl bg-white flex flex-col border-4 border-black overflow-hidden relative">
            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
@@ -490,13 +535,13 @@ export default function App() {
            <div className="flex flex-col flex-1 overflow-hidden relative justify-center items-center p-6 md:p-12 z-10">
               {/* Top Text (Centered) */}
               <div className="text-center mb-8 flex flex-col items-center text-black">
-                 <h3 className="text-4xl md:text-5xl lg:text-7xl font-bold uppercase tracking-tighter mb-4 leading-none text-black">Alorica</h3>
-                 <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">Technical Support Representative → Temporary SME</div>
-                 <p className="text-xl md:text-3xl text-zinc-300 max-w-2xl font-medium leading-tight mb-6">
-                   Managed escalations and directed the floor.
+                 <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-4 leading-none text-black">Alorica / Google Fi Wireless</h3>
+                 <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">Technical Support Representative → Team Support / SME</div>
+                 <p className="text-xl md:text-3xl text-zinc-700 max-w-2xl font-medium leading-tight mb-6">
+                   Directed floor support and resolved tier-2 escalations for a 15-person team.
                  </p>
-                 <div className="inline-block bg-white text-black px-3 py-2 font-bold text-xs md:text-sm uppercase tracking-widest">
-                   High volume traffic.
+                 <div className="inline-block bg-black text-white px-3 py-2 font-bold text-xs md:text-sm uppercase tracking-widest">
+                   High volume tier-2 operations.
                  </div>
               </div>
               
@@ -505,7 +550,7 @@ export default function App() {
                  <motion.div style={{ x: parallaxX, y: parallaxY }} className="w-full h-full border-4 border-black bg-white flex flex-col p-4 md:p-6 shadow-[10px_10px_0px_black]">
                    <div className="flex border-b-2 border-black pb-2 mb-4 justify-between items-end font-mono text-xs md:text-sm text-black relative z-20 bg-white">
                     <span>ESCALATION_QUEUE</span>
-                    <span className="animate-pulse text-red-500 font-bold bg-zinc-900 px-2 py-1">CRITICAL</span>
+                    <span className="animate-pulse text-red-500 font-bold bg-zinc-900 px-2 py-1 text-white">CRITICAL</span>
                  </div>
                  <div className="flex-1 overflow-hidden relative">
                     <motion.div 
@@ -527,7 +572,7 @@ export default function App() {
            </div>
         </motion.div>
 
-        {/* Layer 8: Concentrix */}
+        {/* Layer 8: Concentrix / Macy's */}
         <motion.div style={{ clipPath: cClip, y: cY }} className="absolute inset-0 z-30 flex items-center justify-center p-4 md:p-8 pointer-events-none">
            <div className="w-full h-full max-w-7xl bg-white flex flex-col border-4 border-black overflow-hidden relative">
            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
@@ -548,7 +593,7 @@ export default function App() {
                          key={i} 
                          className="flex-1 bg-zinc-400" 
                          animate={{ height: [`${h}%`, `${Math.min(100, h + (i%2==0?20:10))}%`, `${Math.max(10, h - 15)}%`, `${h}%`] }}
-                         transition={{ duration: 2 + i * 0.3, repeat: Infinity, ease: "easeInOut" }}
+                         transition={{ duration: 2 + i * 0.3, repeat: Infinity, ease: "easeInOut" }} 
                        />
                      ))}
                    </div>
@@ -557,18 +602,18 @@ export default function App() {
                    </div>
                    <motion.div 
                      animate={{ top: ["0%", "100%", "0%"] }} 
-                     transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                     className="absolute left-0 w-full h-1 bg-white/20 z-30 pointer-events-none mix-blend-overlay"
+                     transition={{ duration: 4, repeat: Infinity, ease: "linear" }} 
+                     className="absolute left-0 w-full h-1 bg-white/20 z-30 pointer-events-none mix-blend-overlay" 
                    />
                 </motion.div>
              </motion.div>
              {/* Right Text */}
              <div className="flex-1 p-6 md:p-12 lg:p-16 border-b-4 md:border-b-0 md:border-r-0 border-black flex flex-col justify-center bg-white text-black">
-                <h3 className="text-4xl md:text-5xl lg:text-7xl font-bold uppercase tracking-tighter mb-4 leading-none">Concentrix</h3>
-                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">Customer Service Representative → Reporting Analyst Intern</div>
-                <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">Built glidepath models from performance data.</p>
+                <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-4 leading-none text-black">Concentrix / Macy's</h3>
+                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">Customer Service Representative → Reporting Analyst Apprentice</div>
+                <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">Top agent in 3 months; promoted to Reporting Apprentice & SME supporting 50+ agents.</p>
                 <div className="inline-block bg-black text-white px-3 py-2 self-start font-bold text-xs md:text-sm uppercase tracking-widest">
-                  It dropped bounce rates drastically.
+                  Built glidepath models & automated reports.
                 </div>
              </div>
            </div>
@@ -582,9 +627,9 @@ export default function App() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 md:gap-x-16 gap-y-6 md:gap-y-10 uppercase tracking-widest font-bold text-lg md:text-2xl lg:text-3xl text-white">
             
-            {/* Skill 1: Microsoft Excel (Advanced) */}
+            {/* Skill 1: Microsoft Excel & VBA */}
             <motion.div whileHover={{ scale: 1.05, backgroundColor: "#ffffff", color: "#000000", padding: "1rem" }} className="border-b-4 border-zinc-800 pb-4 flex flex-col justify-between pointer-events-auto transition-colors cursor-pointer">
-              <div className="mb-4">Microsoft Excel (Advanced)</div>
+              <div className="mb-4">Microsoft Excel & VBA</div>
               <div className="grid grid-cols-4 gap-2 h-6 md:h-8">
                 {[0,1,2,3,4,5,6,7].map(i => (
                   <motion.div 
@@ -597,9 +642,9 @@ export default function App() {
               </div>
             </motion.div>
 
-            {/* Skill 2: Workflow Automation */}
+            {/* Skill 2: Workflow Automation & PowerApps */}
             <motion.div whileHover={{ scale: 1.05, backgroundColor: "#ffffff", color: "#000000", padding: "1rem" }} className="border-b-4 border-zinc-800 pb-4 flex flex-col justify-between pointer-events-auto transition-colors cursor-pointer">
-              <div className="mb-4">Workflow Automation</div>
+              <div className="mb-4">Workflow Automation & PowerApps</div>
               <div className="flex items-center gap-2 h-6 md:h-8 mix-blend-difference">
                  <motion.div animate={{ rotate: 180 }} transition={{ duration: 1, repeat: Infinity, ease: "backInOut", repeatDelay: 0.5 }} className="w-6 h-6 md:w-8 md:h-8 bg-white flex-shrink-0" />
                  <div className="flex-1 h-1 md:h-2 bg-zinc-800 relative overflow-hidden">
@@ -625,9 +670,9 @@ export default function App() {
               </div>
             </motion.div>
 
-            {/* Skill 4: AI Integration */}
+            {/* Skill 4: Claude Projects & MCP Scraping */}
             <motion.div whileHover={{ scale: 1.05, backgroundColor: "#ffffff", color: "#000000", padding: "1rem" }} className="border-b-4 border-zinc-800 pb-4 flex flex-col justify-between pointer-events-auto transition-colors cursor-pointer">
-              <div className="mb-4">AI Integration</div>
+              <div className="mb-4">Claude Projects & MCP Scraping</div>
               <div className="flex items-center justify-center gap-1.5 md:gap-2 h-6 md:h-8 overflow-hidden mix-blend-difference">
                  {[1,2,3,4,5,6,7,8,9,10].map(i => (
                    <motion.div 
@@ -640,9 +685,9 @@ export default function App() {
               </div>
             </motion.div>
 
-            {/* Skill 5: Real-Time Monitoring */}
+            {/* Skill 5: Real-Time Monitoring & Floor SME */}
             <motion.div whileHover={{ scale: 1.05, backgroundColor: "#ffffff", color: "#000000", padding: "1rem" }} className="border-b-4 border-zinc-800 pb-4 flex flex-col justify-between pointer-events-auto transition-colors cursor-pointer">
-              <div className="mb-4">Real-Time Monitoring</div>
+              <div className="mb-4">Real-Time Monitoring & Floor SME</div>
               <div className="h-6 md:h-8 relative overflow-hidden flex items-center border-l-4 border-red-500 bg-zinc-900 pl-3 mix-blend-difference">
                  <motion.div animate={{ opacity: [1, 0, 1] }} transition={{ duration: 0.8, repeat: Infinity }} className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-red-500 mr-2 md:mr-3 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
                  <span className="font-mono text-[10px] md:text-sm text-red-400 tracking-widest uppercase font-bold">Live_Feed_Active</span>
@@ -650,9 +695,9 @@ export default function App() {
               </div>
             </motion.div>
 
-            {/* Skill 6: Data QA & Reporting */}
+            {/* Skill 6: Data QA & Operations Reporting */}
             <motion.div whileHover={{ scale: 1.05, backgroundColor: "#ffffff", color: "#000000", padding: "1rem" }} className="border-b-4 border-zinc-800 pb-4 flex flex-col justify-between pointer-events-auto transition-colors cursor-pointer">
-              <div className="mb-4">Data QA & Reporting</div>
+              <div className="mb-4">Data QA & Operations Reporting</div>
               <div className="h-6 md:h-8 flex flex-col justify-between overflow-hidden relative p-1 bg-black mix-blend-difference">
                  <div className="w-full h-1 bg-zinc-800" />
                  <div className="w-full h-1 bg-zinc-800" />
@@ -701,7 +746,17 @@ export default function App() {
             <div className="border-l-4 border-zinc-600 pl-6 md:pl-10 relative mt-8">
               <div className="absolute -left-[14px] top-0 w-6 h-6 bg-zinc-600 rotate-45" />
               <h3 className="text-2xl md:text-3xl font-bold uppercase tracking-tighter leading-none mb-2 text-zinc-300">Responsive Web Design</h3>
-              <p className="text-lg font-bold text-zinc-500 uppercase tracking-widest">freeCodeCamp.org | Apr 2024</p>
+              <div className="flex flex-wrap items-center gap-3">
+                <p className="text-lg font-bold text-zinc-500 uppercase tracking-widest">freeCodeCamp.org | Apr 2024</p>
+                <a 
+                  href="https://www.freecodecamp.org/certification/kaizo1101/responsive-web-design" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="pointer-events-auto inline-flex items-center gap-1.5 bg-zinc-800 hover:bg-white text-zinc-300 hover:text-black border border-zinc-700 hover:border-black px-3 py-1 font-mono font-bold text-xs uppercase tracking-wider transition-colors shadow-sm"
+                >
+                  <span>Verify Credential ↗</span>
+                </a>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -715,9 +770,12 @@ export default function App() {
             
             {/* About Me Text */}
             <div className="border-l-4 border-black pl-4 md:pl-6 mt-6 md:mt-8 max-w-xl text-left">
-              <p className="text-sm md:text-base lg:text-lg font-sans text-zinc-600 leading-relaxed normal-case font-medium">
+              <p className="text-sm md:text-base lg:text-lg font-sans text-zinc-700 leading-relaxed normal-case font-medium mb-4">
                 <strong className="text-black font-bold">QA, data, automation, ops support, done fast.</strong> Twenty years old, self-taught, ENTP, allergic to doing anything the slow way twice. Hand me your calendar, your backlog, or your spreadsheet mess, I've already rebuilt it before you finish explaining the problem.
               </p>
+              <div className="p-3 md:p-4 bg-zinc-100 border-2 border-black font-mono text-xs md:text-sm text-black font-bold tracking-tight shadow-[3px_3px_0px_black]">
+                &gt; "If you need someone who follows instructions well but also flags the dumb step nobody’s questioned yet, hire me."
+              </div>
             </div>
           </div>
           <div className="flex flex-col items-center md:items-end text-center md:text-right pointer-events-auto w-full md:w-auto shrink-0 md:pl-8">
@@ -732,6 +790,9 @@ export default function App() {
         </motion.div>
 
       </div>
+
+      {/* Case Study Breakdown Modal */}
+      <CaseStudyModal isOpen={isCaseStudyOpen} onClose={() => setIsCaseStudyOpen(false)} />
     </div>
   );
 }
