@@ -5,9 +5,13 @@ import ReceiptsBackground from './components/ReceiptsBackground';
 import ScrollPrompt from './components/ScrollPrompt';
 import TableOfContents from './components/TableOfContents';
 import CaseStudyModal from './components/CaseStudyModal';
+import VideoModal from './components/VideoModal';
+import DirectorsCutCard from './components/DirectorsCutCard';
+import { directorsCutFilms, type DirectorsCutFilm } from './data/directorsCut';
 
 export default function App() {
   const [isCaseStudyOpen, setIsCaseStudyOpen] = useState(false);
+  const [selectedFilm, setSelectedFilm] = useState<DirectorsCutFilm | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: rawProgress } = useScroll({ 
     target: containerRef, 
@@ -66,11 +70,11 @@ export default function App() {
   const tapeOpacity = useTransform(progress, [0.32, 0.325], [0, 1]);
 
   // 4. Statement
-  // Wipes in 0.39 to 0.41, scrambles until 0.47, wipes out 0.49 to 0.51 (Added pause)
-  const sClip = useTransform(progress, [0.39, 0.41, 0.54, 0.55], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
-  const sScale = useTransform(progress, [0.40, 0.51], [0.95, 1.1]);
-  const codeWrapBg = useTransform(progress, [0.49, 0.51], ["transparent", "#ffffff"]);
-  const codeWrapScale = useTransform(progress, [0.49, 0.55], [1, 150]);
+  // Wipes in 0.39 to 0.41, scrambles until 0.47, wipes out 0.51 to 0.52
+  const sClip = useTransform(progress, [0.39, 0.41, 0.51, 0.52], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
+  const sScale = useTransform(progress, [0.40, 0.49], [0.95, 1.1]);
+  const codeWrapBg = useTransform(progress, [0.49, 0.50], ["transparent", "#ffffff"]);
+  const codeWrapScale = useTransform(progress, [0.49, 0.52], [1, 150]);
 
   // "CODE" Highlight & Matrix Scramble Animation
   const codeClip = useTransform(progress, [0.42, 0.44], ["inset(0 0 0 100%)", "inset(0 0 0 0%)"]);
@@ -133,38 +137,42 @@ export default function App() {
   });
 
   // 4.5. The Receipts (Experience Intro)
-  // Wipes in 0.52 to 0.54, wipes out 0.58 to 0.60
-  const pClip = useTransform(progress, [0.52, 0.54, 0.58, 0.60], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
-  const pScale = useTransform(progress, [0.53, 0.60], [1, 1.1]);
+  // Wipes in 0.50 to 0.52, wipes out 0.56 to 0.58
+  const pClip = useTransform(progress, [0.50, 0.52, 0.56, 0.58], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
+  const pScale = useTransform(progress, [0.51, 0.58], [1, 1.1]);
 
   // 5. Flatworld (01)
-  const fClip = useTransform(progress, [0.61, 0.63, 0.67, 0.69], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
-  const fY = useTransform(progress, [0.61, 0.63, 0.67, 0.69], ["50px", "0px", "0px", "-50px"]);
-  const fVisualX = useTransform(progress, [0.61, 0.64], ["100%", "0%"]);
+  const fClip = useTransform(progress, [0.58, 0.60, 0.64, 0.66], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
+  const fY = useTransform(progress, [0.58, 0.60, 0.64, 0.66], ["50px", "0px", "0px", "-50px"]);
+  const fVisualX = useTransform(progress, [0.58, 0.61], ["100%", "0%"]);
 
   // 6. INFLXD (02)
-  const i2Clip = useTransform(progress, [0.69, 0.71, 0.75, 0.77], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
-  const i2Y = useTransform(progress, [0.69, 0.71, 0.75, 0.77], ["50px", "0px", "0px", "-50px"]);
-  const i2VisualX = useTransform(progress, [0.69, 0.72], ["100%", "0%"]);
+  const i2Clip = useTransform(progress, [0.66, 0.68, 0.72, 0.74], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
+  const i2Y = useTransform(progress, [0.66, 0.68, 0.72, 0.74], ["50px", "0px", "0px", "-50px"]);
+  const i2VisualX = useTransform(progress, [0.66, 0.69], ["100%", "0%"]);
 
   // 7. Alorica (03)
-  const aClip = useTransform(progress, [0.75, 0.77, 0.81, 0.83], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
-  const aY = useTransform(progress, [0.75, 0.77, 0.81, 0.83], ["50px", "0px", "0px", "-50px"]);
-  const aVisualScale = useTransform(progress, [0.75, 0.78], [0.5, 1]);
-  const aVisualOpacity = useTransform(progress, [0.75, 0.78], [0, 1]);
+  const aClip = useTransform(progress, [0.72, 0.74, 0.78, 0.80], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
+  const aY = useTransform(progress, [0.72, 0.74, 0.78, 0.80], ["50px", "0px", "0px", "-50px"]);
+  const aVisualScale = useTransform(progress, [0.72, 0.75], [0.5, 1]);
+  const aVisualOpacity = useTransform(progress, [0.72, 0.75], [0, 1]);
 
   // 8. Concentrix (04)
-  const cClip = useTransform(progress, [0.81, 0.83, 0.87, 0.89], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
-  const cY = useTransform(progress, [0.81, 0.83, 0.87, 0.89], ["50px", "0px", "0px", "-50px"]);
-  const cVisualX = useTransform(progress, [0.81, 0.84], ["-100%", "0%"]);
+  const cClip = useTransform(progress, [0.78, 0.80, 0.84, 0.86], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
+  const cY = useTransform(progress, [0.78, 0.80, 0.84, 0.86], ["50px", "0px", "0px", "-50px"]);
+  const cVisualX = useTransform(progress, [0.78, 0.81], ["-100%", "0%"]);
+
+  // 8.5. Director's Cut (Archive 01)
+  const dcClip = useTransform(progress, [0.84, 0.86, 0.90, 0.92], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
+  const dcY = useTransform(progress, [0.84, 0.86, 0.90, 0.92], ["50px", "0px", "0px", "-50px"]);
 
   // 9. Core Skills
-  const arClip = useTransform(progress, [0.87, 0.89, 0.93, 0.94], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
-  const arY = useTransform(progress, [0.87, 0.89, 0.93, 0.94], ["100px", "0px", "0px", "-100px"]);
+  const arClip = useTransform(progress, [0.90, 0.92, 0.95, 0.96], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
+  const arY = useTransform(progress, [0.90, 0.92, 0.95, 0.96], ["100px", "0px", "0px", "-100px"]);
 
   // 10. Education
-  const eduClip = useTransform(progress, [0.93, 0.94, 0.98, 0.995], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
-  const eduY = useTransform(progress, [0.93, 0.94, 0.98, 0.995], ["100px", "0px", "0px", "-100px"]);
+  const eduClip = useTransform(progress, [0.95, 0.96, 0.985, 0.995], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)"]);
+  const eduY = useTransform(progress, [0.95, 0.96, 0.985, 0.995], ["100px", "0px", "0px", "-100px"]);
 
   // 11. Footer
   const ftClip = useTransform(progress, [0.99, 0.995, 1, 1], ["inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)", "inset(0% 0% 0% 0%)"]);
@@ -620,6 +628,60 @@ export default function App() {
            </div>
         </motion.div>
 
+        {/* Layer 8.5: Director's Cut (Archive 01) */}
+        <motion.div style={{ clipPath: dcClip, y: dcY }} className="absolute inset-0 z-30 flex items-center justify-center p-4 md:p-8 pointer-events-none">
+           <div className="w-full h-full max-w-7xl bg-white flex flex-col border-4 border-black overflow-hidden relative pointer-events-auto">
+             {/* Header Bar */}
+             <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
+               <div className="flex items-center gap-2">
+                 <span className="bg-black text-white px-2 py-0.5 text-xs md:text-sm font-mono font-bold">
+                   ARCHIVE [01]
+                 </span>
+                 <span>DIRECTOR&apos;S CUT</span>
+               </div>
+               <span className="font-mono text-xs md:text-sm text-zinc-600">2022 — 2023</span>
+             </div>
+
+             {/* Main Content Area */}
+             <div className="flex-1 overflow-y-auto p-4 md:p-8 flex flex-col justify-between">
+               {/* Section Title & Subtitle */}
+               <div className="mb-4 md:mb-6">
+                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b-2 border-black pb-3">
+                   <div>
+                     <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tighter leading-none text-black">
+                       Film &amp; Media Projects
+                     </h3>
+                     <p className="font-mono text-xs md:text-sm text-zinc-600 font-bold uppercase tracking-wider mt-1">
+                       Directing / Editing / Scriptwriting / 2x STI Local Champion
+                     </p>
+                   </div>
+                   <div className="font-mono text-xs font-bold uppercase bg-zinc-100 border border-black px-2 py-1 text-black self-start sm:self-auto">
+                     3 Works Archived
+                   </div>
+                 </div>
+               </div>
+
+               {/* 3-Column Video Card Grid */}
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 flex-1 items-stretch">
+                 {directorsCutFilms.map((film, idx) => (
+                   <DirectorsCutCard
+                     key={film.id}
+                     film={film}
+                     index={idx}
+                     onSelect={(f) => setSelectedFilm(f)}
+                   />
+                 ))}
+               </div>
+
+               {/* Bottom Info Note */}
+               <div className="mt-4 pt-3 border-t-2 border-zinc-200 flex flex-col sm:flex-row justify-between items-start sm:items-center font-mono text-[10px] md:text-xs text-zinc-500 uppercase gap-1">
+                 <span>SELECT ANY ENTRY TO LAUNCH PLAYER</span>
+                 <span>STI COLLEGE DAVAO &bull; MEDIA LITERACY</span>
+               </div>
+             </div>
+           </div>
+        </motion.div>
+
         {/* Layer 9: Core Skills */}
         <motion.div style={{ clipPath: arClip, y: arY }} className="absolute inset-0 w-full bg-black z-30 p-8 md:p-16 flex flex-col justify-center pointer-events-none max-w-7xl mx-auto">
           <h2 className="text-5xl md:text-7xl lg:text-[8rem] font-bold uppercase tracking-tighter mb-12 md:mb-16 leading-none border-b-8 border-white pb-4 text-white">
@@ -793,6 +855,9 @@ export default function App() {
 
       {/* Case Study Breakdown Modal */}
       <CaseStudyModal isOpen={isCaseStudyOpen} onClose={() => setIsCaseStudyOpen(false)} />
+
+      {/* Director's Cut Video Modal */}
+      <VideoModal film={selectedFilm} onClose={() => setSelectedFilm(null)} />
     </div>
   );
 }

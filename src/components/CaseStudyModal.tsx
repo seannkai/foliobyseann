@@ -1,4 +1,4 @@
-﻿import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface CaseStudyModalProps {
@@ -8,23 +8,37 @@ interface CaseStudyModalProps {
 
 export default function CaseStudyModal({ isOpen, onClose }: CaseStudyModalProps) {
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
     if (isOpen) {
-      window.addEventListener('keydown', handleKeyDown);
+      // Lock the background scroll
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+
+      // Wire up the Escape key
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          onClose();
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        // Cleanup when modal closes
+        document.body.style.overflow = 'unset';
+        document.documentElement.style.overflow = 'unset';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
     }
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
   }, [isOpen, onClose]);
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-8 pointer-events-auto select-auto">
+        <div
+          className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-8 pointer-events-auto select-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) onClose();
+          }}
+        >
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}

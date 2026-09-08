@@ -4,10 +4,11 @@ import { motion, AnimatePresence, MotionValue, useTransform } from 'framer-motio
 const sections = [
   { id: '00', title: 'Title', progress: 0 },
   { id: '01', title: 'Prelude', progress: 0.15 },
-  { id: '02', title: 'Career', progress: 0.55 }, // The Receipts
-  { id: '03', title: 'Core Skills', progress: 0.87 },
-  { id: '04', title: 'Education', progress: 0.94 },
-  { id: '05', title: 'About Me', progress: 1.0 }, // Footer
+  { id: '02', title: 'Career', progress: 0.52 }, // The Receipts
+  { id: '03', title: "Director's Cut", progress: 0.86 },
+  { id: '04', title: 'Core Skills', progress: 0.92 },
+  { id: '05', title: 'Education', progress: 0.96 },
+  { id: '06', title: 'About Me', progress: 1.0 }, // Footer
 ];
 
 interface TableOfContentsProps {
@@ -17,11 +18,11 @@ interface TableOfContentsProps {
 export default function TableOfContents({ progress }: TableOfContentsProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  // When page edge is white (0-0.02, 0.51-0.58, 0.99-1.0), TOC is white with black text.
-  // When page edge is black (0.05-0.49, 0.60-0.99), TOC is black with white text.
-  const bgColor = useTransform(progress, [0, 0.02, 0.05, 0.49, 0.51, 0.58, 0.60, 0.99, 1], ["#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000", "#ffffff"]);
-  const textColor = useTransform(progress, [0, 0.02, 0.05, 0.49, 0.51, 0.58, 0.60, 0.99, 1], ["#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff", "#000000"]);
-  const borderColor = useTransform(progress, [0, 0.02, 0.05, 0.49, 0.51, 0.58, 0.60, 0.99, 1], ["#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff", "#000000"]);
+  // When page edge is white (0-0.02, 0.49-0.56, 0.99-1.0), TOC is white with black text.
+  // When page edge is black (0.05-0.47, 0.58-0.99), TOC is black with white text.
+  const bgColor = useTransform(progress, [0, 0.02, 0.05, 0.47, 0.49, 0.56, 0.58, 0.99, 1], ["#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000", "#ffffff"]);
+  const textColor = useTransform(progress, [0, 0.02, 0.05, 0.47, 0.49, 0.56, 0.58, 0.99, 1], ["#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff", "#000000"]);
+  const borderColor = useTransform(progress, [0, 0.02, 0.05, 0.47, 0.49, 0.56, 0.58, 0.99, 1], ["#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff", "#000000"]);
 
   const scrollToSection = (progressTarget: number) => {
     const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;

@@ -1,8 +1,19 @@
 import { readLockdownState, readAllowlist } from './lib/storage';
 
-// Bot / scraper detection pattern (excluding claude which is handled by allowlist)
+// Known good social preview bots that should always be allowed through for link previews
+const ALLOWED_PREVIEW_BOTS = [
+  'slackbot',
+  'twitterbot',
+  'facebookexternalhit',
+  'linkedinbot',
+  'discordbot',
+  'applebot', // iMessage
+  'skypeuripreview',
+];
+
+// Bot / scraper detection pattern (excluding preview bots and claude which is handled by allowlist)
 const BOT_USER_AGENTS =
-  /bot|spider|crawl|scraper|curl|wget|python|httpclient|postman|chatgpt|gptbot|bytespider|google-extended|cohere|diffbot|facebookexternalhit|ia_archiver|semrush|ahrefs|mj12bot|dotbot|yandexbot|ccbot/i;
+  /bot|spider|crawl|scraper|curl|wget|python|httpclient|postman|chatgpt|gptbot|bytespider|google-extended|cohere|diffbot|ia_archiver|semrush|ahrefs|mj12bot|dotbot|yandexbot|ccbot/i;
 
 export const config = {
   matcher: [
@@ -24,9 +35,16 @@ export default async function middleware(request: Request) {
     return;
   }
 
-  const { isLockdown } = await readLockdownState();
   const userAgent = request.headers.get('user-agent') || '';
   const userAgentLower = userAgent.toLowerCase();
+
+  // 1. Check if it's a social preview bot - let pass immediately without blocking
+  const isPreviewBot = ALLOWED_PREVIEW_BOTS.some((bot) => userAgentLower.includes(bot));
+  if (isPreviewBot) {
+    return;
+  }
+
+  const { isLockdown } = await readLockdownState();
 
   if (isLockdown) {
     const allowlist = await readAllowlist();
