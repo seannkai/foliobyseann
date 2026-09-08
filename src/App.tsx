@@ -639,30 +639,26 @@ export default function App() {
                  </span>
                  <span>DIRECTOR&apos;S CUT</span>
                </div>
-               <span className="font-mono text-xs md:text-sm text-zinc-600">2022 — 2023</span>
+               <span className="font-mono text-xs md:text-sm text-zinc-600">2021 — 2022</span>
              </div>
 
-             {/* Main Content Area */}
-             <div className="flex-1 overflow-y-auto p-4 md:p-8 flex flex-col justify-between">
-               {/* Section Title & Subtitle */}
-               <div className="mb-4 md:mb-6">
-                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b-2 border-black pb-3">
-                   <div>
-                     <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tighter leading-none text-black">
-                       Film &amp; Media Projects
-                     </h3>
-                     <p className="font-mono text-xs md:text-sm text-zinc-600 font-bold uppercase tracking-wider mt-1">
-                       Directing / Editing / Scriptwriting / 2x STI Local Champion
-                     </p>
-                   </div>
-                   <div className="font-mono text-xs font-bold uppercase bg-zinc-100 border border-black px-2 py-1 text-black self-start sm:self-auto">
-                     3 Works Archived
-                   </div>
+             {/* Centered Main Content Area */}
+             <div className="flex flex-col flex-1 overflow-y-auto justify-center items-center p-6 md:p-10 z-10 text-black">
+               {/* Centered Top Text */}
+               <div className="text-center mb-6 md:mb-8 flex flex-col items-center">
+                 <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-2 leading-none text-black">
+                   Film &amp; Media Archive
+                 </h3>
+                 <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-3 uppercase tracking-widest">
+                   Directing &bull; Editing &bull; Scriptwriting &bull; Media Literacy
+                 </div>
+                 <div className="inline-block bg-black text-white px-3 py-1 font-bold text-xs md:text-sm uppercase tracking-widest">
+                   STI Tagisan ng Sining &bull; 2x Local Champion
                  </div>
                </div>
 
-               {/* 3-Column Video Card Grid */}
-               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 flex-1 items-stretch">
+               {/* Centered 3-Column Video Card Grid */}
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl items-stretch">
                  {directorsCutFilms.map((film, idx) => (
                    <DirectorsCutCard
                      key={film.id}
@@ -674,9 +670,8 @@ export default function App() {
                </div>
 
                {/* Bottom Info Note */}
-               <div className="mt-4 pt-3 border-t-2 border-zinc-200 flex flex-col sm:flex-row justify-between items-start sm:items-center font-mono text-[10px] md:text-xs text-zinc-500 uppercase gap-1">
-                 <span>SELECT ANY ENTRY TO LAUNCH PLAYER</span>
-                 <span>STI COLLEGE DAVAO &bull; MEDIA LITERACY</span>
+               <div className="font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest text-zinc-400 mt-6 text-center">
+                 [ CLICK ANY ENTRY TO LAUNCH PLAYER ]
                </div>
              </div>
            </div>
