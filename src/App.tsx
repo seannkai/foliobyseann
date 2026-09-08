@@ -639,7 +639,7 @@ export default function App() {
                  </span>
                  <span>DIRECTOR&apos;S CUT</span>
                </div>
-               <span className="font-mono text-xs md:text-sm text-zinc-600">2021 — 2022</span>
+               <span className="font-mono text-xs md:text-sm text-zinc-600">2022 — 2024</span>
              </div>
 
              {/* Centered Main Content Area */}
