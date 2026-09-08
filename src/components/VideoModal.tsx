@@ -95,7 +95,8 @@ export default function VideoModal({ film, onClose }: VideoModalProps) {
                     src={film.embedUrl}
                     title={film.title}
                     className="w-full h-full border-0"
-                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
                   />
                 )}
