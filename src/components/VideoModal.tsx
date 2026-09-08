@@ -82,14 +82,23 @@ export default function VideoModal({ film, onClose }: VideoModalProps) {
             {/* Scrollable Content */}
             <div className="p-4 md:p-8 overflow-y-auto space-y-6 text-left font-sans">
               {/* Video Embed */}
-              <div className="w-full aspect-video bg-black border-4 border-black shadow-[8px_8px_0px_black] overflow-hidden">
-                <iframe
-                  src={film.embedUrl}
-                  title={film.title}
-                  className="w-full h-full border-0"
-                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+              <div className="w-full aspect-video bg-black border-4 border-black shadow-[8px_8px_0px_black] overflow-hidden flex items-center justify-center">
+                {film.platform === 'video' ? (
+                  <video
+                    src={film.embedUrl}
+                    controls
+                    playsInline
+                    className="w-full h-full object-contain bg-black"
+                  />
+                ) : (
+                  <iframe
+                    src={film.embedUrl}
+                    title={film.title}
+                    className="w-full h-full border-0"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                )}
               </div>
 
               {/* Title, Year & Badges */}
@@ -105,7 +114,11 @@ export default function VideoModal({ film, onClose }: VideoModalProps) {
                       </span>
                     )}
                     <span className="font-mono text-xs font-bold border border-black px-2 py-0.5 uppercase tracking-wider text-zinc-700">
-                      {film.platform === 'google-drive' ? 'GOOGLE DRIVE PREVIEW' : 'YOUTUBE'}
+                      {film.platform === 'video'
+                        ? 'DIRECT VIDEO'
+                        : film.platform === 'google-drive'
+                        ? 'GOOGLE DRIVE PREVIEW'
+                        : 'YOUTUBE'}
                     </span>
                   </div>
                 </div>

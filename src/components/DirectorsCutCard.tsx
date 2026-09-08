@@ -108,7 +108,11 @@ export default function DirectorsCutCard({ film, index, onSelect }: DirectorsCut
 
           <div className="flex justify-between items-center font-mono text-xs font-bold pt-1">
             <span className="uppercase text-zinc-500 text-[10px]">
-              {film.platform === 'google-drive' ? 'DRIVE STREAM' : 'YOUTUBE'}
+              {film.platform === 'video'
+                ? 'DIRECT STREAM'
+                : film.platform === 'google-drive'
+                ? 'DRIVE STREAM'
+                : 'YOUTUBE'}
             </span>
             <span className="inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
               WATCH ↗

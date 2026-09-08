@@ -28,3 +28,6 @@ dist-ssr
 .agents/
 skills-lock.json
 
+# Large media files (>100MB exceeds GitHub push limit)
+*.mp4
+
