@@ -136,20 +136,56 @@ export default function App() {
   const pClip = useTransform(progress, [0.50, 0.52, 0.56, 0.58], ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 100% 0%)']);
   const pScale = useTransform(progress, [0.51, 0.58], [1, 1.1]);
 
-  // 5. Horizontal Career Scroll Block (Flatworld through Core Skills)
+  // 5. Horizontal Career Scroll Block (Flatworld through Director's Cut)
   const careerClip = useTransform(
     progress,
-    [0.56, 0.58, 0.88, 0.90],
+    [0.56, 0.58, 0.78, 0.80],
     ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 100% 0%)']
   );
 
-  // 6. Education
-  const eduClip = useTransform(progress, [0.88, 0.90, 0.96, 0.97], ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 100% 0%)']);
-  const eduY = useTransform(progress, [0.88, 0.90, 0.96, 0.97], ['100px', '0px', '0px', '-100px']);
+  // 6. Core Skills (Classic full-page vertical wipe layer)
+  const skillsClip = useTransform(
+    progress,
+    [0.78, 0.80, 0.86, 0.88],
+    ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 100% 0%)']
+  );
+  const skillsY = useTransform(
+    progress,
+    [0.78, 0.80, 0.86, 0.88],
+    ['100px', '0px', '0px', '-100px']
+  );
 
-  // 7. Footer / About Me
-  const ftClip = useTransform(progress, [0.97, 0.985, 1, 1], ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)']);
-  const ftY = useTransform(progress, [0.97, 0.985, 1], ['200px', '0px', '0px']);
+  // 7. Tools Used (Dedicated full-page vertical wipe layer)
+  const toolsClip = useTransform(
+    progress,
+    [0.86, 0.88, 0.93, 0.945],
+    ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 100% 0%)']
+  );
+  const toolsY = useTransform(
+    progress,
+    [0.86, 0.88, 0.93, 0.945],
+    ['100px', '0px', '0px', '-100px']
+  );
+
+  // 8. Education
+  const eduClip = useTransform(
+    progress,
+    [0.93, 0.945, 0.975, 0.985],
+    ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 100% 0%)']
+  );
+  const eduY = useTransform(
+    progress,
+    [0.93, 0.945, 0.975, 0.985],
+    ['100px', '0px', '0px', '-100px']
+  );
+
+  // 9. Footer / About Me
+  const ftClip = useTransform(
+    progress,
+    [0.975, 0.985, 1, 1],
+    ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)', 'inset(0% 0% 0% 0%)']
+  );
+  const ftY = useTransform(progress, [0.975, 0.985, 1], ['200px', '0px', '0px']);
 
   // --- INTERACTIVITY: Mouse Tracking & Parallax ---
   const mouseX = useMotionValue(typeof window !== 'undefined' ? window.innerWidth / 2 : 0);
@@ -397,16 +433,304 @@ export default function App() {
           />
         </motion.div>
 
-        {/* Layer 6: Education */}
+        {/* Layer 6: Core Skills (Original Full-Page Design) */}
+        <motion.div
+          style={{ clipPath: skillsClip, y: skillsY }}
+          className="absolute inset-0 w-full bg-black z-35 p-6 sm:p-8 md:p-16 flex flex-col justify-center pointer-events-none max-w-7xl mx-auto overflow-y-auto md:overflow-visible"
+        >
+          <div className="pointer-events-auto">
+            <h2 className="text-5xl md:text-7xl lg:text-[8rem] font-bold uppercase tracking-tighter mb-8 md:mb-16 leading-none border-b-4 md:border-b-8 border-white pb-4 text-white">
+              Core<br />Skills
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 md:gap-x-16 gap-y-4 md:gap-y-10 uppercase tracking-widest font-bold text-base md:text-2xl lg:text-3xl text-white">
+              {/* Skill 1: Microsoft Excel & VBA */}
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#000000', padding: '1rem' }}
+                className="border-b-4 border-zinc-800 pb-3 md:pb-4 flex flex-col justify-between transition-colors cursor-pointer"
+              >
+                <div className="mb-2 md:mb-4">Microsoft Excel &amp; VBA</div>
+                <div className="grid grid-cols-4 gap-2 h-6 md:h-8">
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    <motion.div
+                      key={i}
+                      animate={{ opacity: [0.2, 1, 0.2] }}
+                      transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }}
+                      className="bg-white border-2 border-black"
+                    />
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Skill 2: Workflow Automation & PowerApps */}
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#000000', padding: '1rem' }}
+                className="border-b-4 border-zinc-800 pb-3 md:pb-4 flex flex-col justify-between transition-colors cursor-pointer"
+              >
+                <div className="mb-2 md:mb-4">Workflow Automation &amp; PowerApps</div>
+                <div className="flex items-center gap-2 h-6 md:h-8 mix-blend-difference">
+                  <motion.div
+                    animate={{ rotate: 180 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: 'backInOut', repeatDelay: 0.5 }}
+                    className="w-6 h-6 md:w-8 md:h-8 bg-white flex-shrink-0"
+                  />
+                  <div className="flex-1 h-1 md:h-2 bg-zinc-800 relative overflow-hidden">
+                    <motion.div
+                      animate={{ x: ['-100%', '100%'] }}
+                      transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+                      className="absolute inset-0 bg-white"
+                    />
+                  </div>
+                  <motion.div
+                    animate={{ scale: [1, 0.5, 1] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                    className="w-6 h-6 md:w-8 md:h-8 bg-zinc-500 rounded-full flex-shrink-0"
+                  />
+                </div>
+              </motion.div>
+
+              {/* Skill 3: Office Scripts / TypeScript */}
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#000000', padding: '1rem' }}
+                className="border-b-4 border-zinc-800 pb-3 md:pb-4 flex flex-col justify-between transition-colors cursor-pointer"
+              >
+                <div className="mb-2 md:mb-4">Office Scripts / TypeScript</div>
+                <div className="h-6 md:h-8 bg-zinc-900 border-2 border-zinc-700 p-1 md:p-2 flex items-center overflow-hidden relative mix-blend-difference">
+                  <motion.div
+                    initial={{ width: '0%' }}
+                    whileInView={{ width: '100%' }}
+                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 1, ease: 'linear' }}
+                    className="font-mono text-[10px] md:text-sm text-zinc-300 whitespace-nowrap overflow-hidden"
+                  >
+                    <span className="text-red-400">const</span> <span className="text-blue-300">script</span> ={' '}
+                    <span className="text-red-400">async</span> () =&gt; success;
+                  </motion.div>
+                  <motion.div
+                    animate={{ opacity: [0, 1, 0] }}
+                    transition={{ duration: 0.8, repeat: Infinity }}
+                    className="w-1.5 md:w-2 h-3 md:h-4 bg-white ml-1"
+                  />
+                </div>
+              </motion.div>
+
+              {/* Skill 4: Claude Projects & MCP Scraping */}
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#000000', padding: '1rem' }}
+                className="border-b-4 border-zinc-800 pb-3 md:pb-4 flex flex-col justify-between transition-colors cursor-pointer"
+              >
+                <div className="mb-2 md:mb-4">Claude Projects &amp; MCP Scraping</div>
+                <div className="flex items-center justify-center gap-1.5 md:gap-2 h-6 md:h-8 overflow-hidden mix-blend-difference">
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+                    <motion.div
+                      key={i}
+                      animate={{ height: ['20%', '100%', '20%'] }}
+                      transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.1, ease: 'easeInOut' }}
+                      className="flex-1 max-w-[8px] bg-white rounded-full"
+                    />
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Skill 5: Real-Time Monitoring & Floor SME */}
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#000000', padding: '1rem' }}
+                className="border-b-4 border-zinc-800 pb-3 md:pb-4 flex flex-col justify-between transition-colors cursor-pointer"
+              >
+                <div className="mb-2 md:mb-4">Real-Time Monitoring &amp; Floor SME</div>
+                <div className="h-6 md:h-8 relative overflow-hidden flex items-center border-l-4 border-red-500 bg-zinc-900 pl-3 mix-blend-difference">
+                  <motion.div
+                    animate={{ opacity: [1, 0, 1] }}
+                    transition={{ duration: 0.8, repeat: Infinity }}
+                    className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-red-500 mr-2 md:mr-3 shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                  <span className="font-mono text-[10px] md:text-sm text-red-400 tracking-widest uppercase font-bold">
+                    Live_Feed_Active
+                  </span>
+                  <motion.div
+                    animate={{ x: ['-100%', '300%'] }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+                    className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none"
+                  />
+                </div>
+              </motion.div>
+
+              {/* Skill 6: Data QA & Operations Reporting */}
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#000000', padding: '1rem' }}
+                className="border-b-4 border-zinc-800 pb-3 md:pb-4 flex flex-col justify-between transition-colors cursor-pointer"
+              >
+                <div className="mb-2 md:mb-4">Data QA &amp; Operations Reporting</div>
+                <div className="h-6 md:h-8 flex flex-col justify-between overflow-hidden relative p-1 bg-black mix-blend-difference">
+                  <div className="w-full h-1 bg-zinc-800" />
+                  <div className="w-full h-1 bg-zinc-800" />
+                  <div className="w-full h-1 bg-zinc-800" />
+                  <motion.div
+                    animate={{ x: ['-100%', '200%'] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                    className="absolute inset-y-0 w-1/4 border-x-4 border-white bg-white/20 pointer-events-none"
+                  />
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Layer 7: Tools Used */}
+        <motion.div
+          style={{ clipPath: toolsClip, y: toolsY }}
+          className="absolute inset-0 bg-black z-40 p-6 sm:p-8 md:p-16 flex flex-col justify-center pointer-events-none text-white font-sans max-w-7xl mx-auto border-l-8 border-white overflow-y-auto md:overflow-visible"
+        >
+          <div className="pointer-events-auto flex flex-col h-full md:h-auto justify-center">
+            {/* Header */}
+            <div className="border-b-4 md:border-b-8 border-white pb-3 md:pb-4 mb-6 md:mb-8 flex flex-col md:flex-row md:items-end justify-between flex-shrink-0">
+              <div>
+                <span className="font-mono text-xs md:text-sm text-zinc-400 font-bold uppercase tracking-widest block mb-1 md:mb-2">
+                  PRODUCTION STACK // TOOLING ECOSYSTEM
+                </span>
+                <h2 className="text-4xl md:text-7xl lg:text-[7rem] font-bold uppercase tracking-tighter leading-none text-white">
+                  Tools Used
+                </h2>
+              </div>
+              <div className="mt-2 md:mt-0 font-mono text-[10px] md:text-xs text-zinc-400 font-bold uppercase tracking-wider md:text-right">
+                [ PRODUCTION VERIFIED ]<br className="hidden md:inline" />
+                AUTOMATION • DATA QA • AI AGENTS • MEDIA
+              </div>
+            </div>
+
+            {/* 4 Brutalist Arsenal Categories */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 flex-1">
+              {/* Category 1: Spreadsheets & Advanced Data */}
+              <div className="bg-zinc-950 border-2 border-zinc-800 p-4 md:p-6 flex flex-col justify-between hover:border-white transition-colors">
+                <div>
+                  <div className="flex items-center justify-between border-b border-zinc-800 pb-2 mb-3">
+                    <span className="font-mono text-[10px] md:text-xs text-zinc-400 uppercase font-bold tracking-wider">
+                      01 // DATA &amp; SPREADSHEETS
+                    </span>
+                    <span className="font-mono text-[9px] md:text-[10px] bg-white text-black px-1.5 py-0.5 font-bold uppercase">
+                      PRIMARY ENGINE
+                    </span>
+                  </div>
+                  <h3 className="text-lg md:text-2xl font-bold uppercase tracking-tight text-white mb-2">
+                    Excel, VBA &amp; Power Query
+                  </h3>
+                  <p className="text-xs md:text-sm text-zinc-400 normal-case mb-4">
+                    Advanced formulas (XLOOKUP, INDEX/MATCH, dynamic arrays), ETL pipeline design, automated workbook audits, and macro legacy migrations.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-1.5 md:gap-2">
+                  {['Microsoft Excel', 'VBA Macros', 'Power Query', 'Google Sheets', 'CSV / Flatfiles', 'TSV Validation'].map((tool) => (
+                    <span
+                      key={tool}
+                      className="border border-zinc-700 bg-zinc-900 px-2 md:px-2.5 py-1 font-mono text-[10px] md:text-xs text-zinc-300 font-medium"
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Category 2: Automation & Scripting */}
+              <div className="bg-zinc-950 border-2 border-zinc-800 p-4 md:p-6 flex flex-col justify-between hover:border-white transition-colors">
+                <div>
+                  <div className="flex items-center justify-between border-b border-zinc-800 pb-2 mb-3">
+                    <span className="font-mono text-[10px] md:text-xs text-zinc-400 uppercase font-bold tracking-wider">
+                      02 // AUTOMATION &amp; CODE
+                    </span>
+                    <span className="font-mono text-[9px] md:text-[10px] bg-white text-black px-1.5 py-0.5 font-bold uppercase">
+                      ACCELERATOR
+                    </span>
+                  </div>
+                  <h3 className="text-lg md:text-2xl font-bold uppercase tracking-tight text-white mb-2">
+                    TypeScript &amp; Cloud Workflows
+                  </h3>
+                  <p className="text-xs md:text-sm text-zinc-400 normal-case mb-4">
+                    Office Scripts in Excel Online, Power Automate enterprise flows, Node.js data transformers, and custom automated scraper tooling.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-1.5 md:gap-2">
+                  {['TypeScript', 'Office Scripts', 'Power Automate', 'PowerApps', 'Node.js', 'Bash / Shell', 'Git / GitHub'].map((tool) => (
+                    <span
+                      key={tool}
+                      className="border border-zinc-700 bg-zinc-900 px-2 md:px-2.5 py-1 font-mono text-[10px] md:text-xs text-zinc-300 font-medium"
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Category 3: AI Tooling & Context Protocols */}
+              <div className="bg-zinc-950 border-2 border-zinc-800 p-4 md:p-6 flex flex-col justify-between hover:border-white transition-colors">
+                <div>
+                  <div className="flex items-center justify-between border-b border-zinc-800 pb-2 mb-3">
+                    <span className="font-mono text-[10px] md:text-xs text-zinc-400 uppercase font-bold tracking-wider">
+                      03 // AI SYSTEMS &amp; MCP
+                    </span>
+                    <span className="font-mono text-[9px] md:text-[10px] bg-white text-black px-1.5 py-0.5 font-bold uppercase">
+                      FORCE MULTIPLIER
+                    </span>
+                  </div>
+                  <h3 className="text-lg md:text-2xl font-bold uppercase tracking-tight text-white mb-2">
+                    Claude Projects &amp; MCP Integration
+                  </h3>
+                  <p className="text-xs md:text-sm text-zinc-400 normal-case mb-4">
+                    Model Context Protocol custom servers, multi-step prompt architectures, LLM extraction pipelines, and transcription hallucination QA benches.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-1.5 md:gap-2">
+                  {['Claude 3.7 Sonnet', 'Model Context Protocol', 'Claude Projects', 'OpenAI API', 'Prompt Systems', 'Cursor IDE'].map((tool) => (
+                    <span
+                      key={tool}
+                      className="border border-zinc-700 bg-zinc-900 px-2 md:px-2.5 py-1 font-mono text-[10px] md:text-xs text-zinc-300 font-medium"
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Category 4: Operations Platforms & Media Production */}
+              <div className="bg-zinc-950 border-2 border-zinc-800 p-4 md:p-6 flex flex-col justify-between hover:border-white transition-colors">
+                <div>
+                  <div className="flex items-center justify-between border-b border-zinc-800 pb-2 mb-3">
+                    <span className="font-mono text-[10px] md:text-xs text-zinc-400 uppercase font-bold tracking-wider">
+                      04 // OPS PLATFORMS &amp; MEDIA
+                    </span>
+                    <span className="font-mono text-[9px] md:text-[10px] bg-white text-black px-1.5 py-0.5 font-bold uppercase">
+                      ENTERPRISE &amp; CINE
+                    </span>
+                  </div>
+                  <h3 className="text-lg md:text-2xl font-bold uppercase tracking-tight text-white mb-2">
+                    Operations &amp; Video Suite
+                  </h3>
+                  <p className="text-xs md:text-sm text-zinc-400 normal-case mb-4">
+                    Enterprise telecom &amp; retail support dispatch suites, omni-channel queues, plus cinema directing &amp; color grading workflows.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-1.5 md:gap-2">
+                  {['Google Fi Admin', 'Zendesk', 'Microsoft 365 Admin', 'DaVinci Resolve', 'Premiere Pro', 'OBS Studio'].map((tool) => (
+                    <span
+                      key={tool}
+                      className="border border-zinc-700 bg-zinc-900 px-2 md:px-2.5 py-1 font-mono text-[10px] md:text-xs text-zinc-300 font-medium"
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Layer 8: Education */}
         <motion.div
           style={{ clipPath: eduClip, y: eduY }}
-          className="absolute inset-0 bg-black z-30 p-8 md:p-16 flex flex-col justify-center pointer-events-none text-white font-sans max-w-7xl mx-auto border-l-8 border-white"
+          className="absolute inset-0 bg-black z-45 p-6 sm:p-8 md:p-16 flex flex-col justify-center pointer-events-none text-white font-sans max-w-7xl mx-auto border-l-4 md:border-l-8 border-white overflow-y-auto"
         >
-          <h2 className="text-5xl md:text-7xl lg:text-[8rem] font-bold uppercase tracking-tighter mb-12 md:mb-16 leading-none border-b-8 border-white pb-4">
+          <h2 className="text-5xl md:text-7xl lg:text-[8rem] font-bold uppercase tracking-tighter mb-8 md:mb-16 leading-none border-b-4 md:border-b-8 border-white pb-4">
             Education
           </h2>
 
-          <div className="flex flex-col gap-12 pointer-events-auto">
+          <div className="flex flex-col gap-8 md:gap-12 pointer-events-auto">
             {/* UM */}
             <div className="border-l-4 border-white pl-6 md:pl-10 relative">
               <div className="absolute -left-[14px] top-0 w-6 h-6 bg-white rotate-45" />
@@ -451,7 +775,7 @@ export default function App() {
             </div>
 
             {/* Certification */}
-            <div className="border-l-4 border-zinc-600 pl-6 md:pl-10 relative mt-8">
+            <div className="border-l-4 border-zinc-600 pl-6 md:pl-10 relative mt-4 md:mt-8">
               <div className="absolute -left-[14px] top-0 w-6 h-6 bg-zinc-600 rotate-45" />
               <h3 className="text-2xl md:text-3xl font-bold uppercase tracking-tighter leading-none mb-2 text-zinc-300">
                 Responsive Web Design
@@ -473,10 +797,10 @@ export default function App() {
           </div>
         </motion.div>
 
-        {/* Layer 7: Footer */}
+        {/* Layer 9: Footer */}
         <motion.div
           style={{ clipPath: ftClip, y: ftY }}
-          className="absolute inset-0 bg-white z-40 p-8 md:p-16 flex flex-col md:flex-row justify-between items-center md:items-end border-t-8 border-black overflow-y-auto"
+          className="absolute inset-0 bg-white z-50 p-8 md:p-16 flex flex-col md:flex-row justify-between items-center md:items-end border-t-8 border-black overflow-y-auto"
         >
           <div className="flex flex-col gap-6 md:gap-8 mb-12 md:mb-0 pointer-events-auto items-center md:items-start text-center md:text-left flex-1">
             <img

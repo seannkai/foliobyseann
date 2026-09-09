@@ -5,10 +5,11 @@ const sections = [
   { id: '00', title: 'Title', progress: 0 },
   { id: '01', title: 'Prelude', progress: 0.15 },
   { id: '02', title: 'Career', progress: 0.58 },
-  { id: '03', title: "Director's Cut", progress: 0.82 },
-  { id: '04', title: 'Core Skills', progress: 0.88 },
-  { id: '05', title: 'Education', progress: 0.90 },
-  { id: '06', title: 'About Me', progress: 1.0 },
+  { id: '03', title: "Director's Cut", progress: 0.74 },
+  { id: '04', title: 'Core Skills', progress: 0.82 },
+  { id: '05', title: 'Tools Used', progress: 0.89 },
+  { id: '06', title: 'Education', progress: 0.95 },
+  { id: '07', title: 'About Me', progress: 1.0 },
 ];
 
 interface TableOfContentsProps {

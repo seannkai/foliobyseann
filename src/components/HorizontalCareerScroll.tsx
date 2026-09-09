@@ -31,11 +31,11 @@ export default function HorizontalCareerScroll({
       if (!track) return;
 
       const scrollDist = () => document.documentElement.scrollHeight - window.innerHeight;
-      const getX = (panelIndex: number) => -(panelIndex * window.innerWidth);
+      const getX = (index: number) => `-${index * 100}vw`;
 
       /*
         CHOREOGRAPHED TIMELINE WITH COMPLETE STOPS / DWELL WINDOWS:
-        Total duration = 8.5 time units.
+        Total duration = 7.0 time units (5 panels, 4 slides).
         Dwell 0: 0.0 -> 1.0 (Flatworld solid stop / pause)
         Slide 0->1: 1.0 -> 1.5 (Snappy slide to INFLXD)
         Dwell 1: 1.5 -> 2.5 (INFLXD solid stop / pause)
@@ -45,20 +45,17 @@ export default function HorizontalCareerScroll({
         Dwell 3: 4.5 -> 5.5 (Concentrix solid stop / pause)
         Slide 3->4: 5.5 -> 6.0 (Snappy slide to Director's Cut)
         Dwell 4: 6.0 -> 7.0 (Director's Cut solid stop / pause)
-        Slide 4->5: 7.0 -> 7.5 (Snappy slide to Core Skills)
-        Dwell 5: 7.5 -> 8.5 (Core Skills solid stop / pause)
 
-        Midpoints of the 6 dwells for snapping:
-        0.5/8.5 ≈ 0.059, 2.0/8.5 ≈ 0.235, 3.5/8.5 ≈ 0.412,
-        5.0/8.5 ≈ 0.588, 6.5/8.5 ≈ 0.765, 8.0/8.5 ≈ 0.941
+        Midpoints of the 5 dwells for snapping:
+        0.5/7.0 ≈ 0.071, 2.0/7.0 ≈ 0.286, 3.5/7.0 = 0.500,
+        5.0/7.0 ≈ 0.714, 6.5/7.0 ≈ 0.929
       */
       const snapPoints = [
-        0.5 / 8.5,
-        2.0 / 8.5,
-        3.5 / 8.5,
-        5.0 / 8.5,
-        6.5 / 8.5,
-        8.0 / 8.5,
+        0.5 / 7.0,
+        2.0 / 7.0,
+        3.5 / 7.0,
+        5.0 / 7.0,
+        6.5 / 7.0,
       ];
 
       const tl = gsap.timeline({
@@ -66,7 +63,7 @@ export default function HorizontalCareerScroll({
           id: 'horizontal-career-trigger',
           trigger: document.body,
           start: () => scrollDist() * 0.58,
-          end: () => scrollDist() * 0.90,
+          end: () => scrollDist() * 0.78,
           scrub: 0.8,
           snap: {
             snapTo: snapPoints,
@@ -145,26 +142,7 @@ export default function HorizontalCareerScroll({
       );
 
       // Panel 4 (Director's Cut) holds at -400vw from 6.0 to 7.0 (SOLID DWELL)
-
-      // Slide 5: to Panel 5 (Core Skills)
-      tl.to(
-        track,
-        {
-          x: () => getX(5),
-          ease: 'power2.inOut',
-          duration: 0.5,
-        },
-        7.0
-      );
-      tl.fromTo(
-        '.core-skill-item',
-        { y: 15, opacity: 0.4 },
-        { y: 0, opacity: 1, stagger: 0.02, ease: 'power2.out', duration: 0.3 },
-        7.1
-      );
-
-      // Panel 5 (Core Skills) holds at -500vw from 7.5 to 8.5 (SOLID DWELL)
-      tl.set({}, {}, 8.5);
+      tl.set({}, {}, 7.0);
 
       return () => {
         tl.kill();
@@ -179,10 +157,10 @@ export default function HorizontalCareerScroll({
       id="section-career"
       className="w-full h-full relative overflow-hidden bg-black select-none md:select-auto"
     >
-      {/* Horizontal Track: 6 side-by-side full-screen panels */}
+      {/* Horizontal Track: 5 side-by-side full-screen panels */}
       <div
         ref={trackRef}
-        className="flex flex-row w-[600vw] h-full will-change-transform"
+        className="flex flex-row w-[500vw] h-full will-change-transform"
       >
         {/* ============================================================ */}
         {/* PANEL 1: Flatworld / Flinn Scientific (01)                   */}
@@ -691,135 +669,6 @@ export default function HorizontalCareerScroll({
 
               <div className="font-mono text-[9px] md:text-xs font-bold uppercase tracking-widest text-zinc-400 mt-2 md:mt-3 text-center">
                 [ CLICK ANY FILM TO LAUNCH EMBEDDED PLAYER ]
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ============================================================ */}
-        {/* PANEL 6: Core Skills (09)                                    */}
-        {/* ============================================================ */}
-        <section
-          id="section-core-skills"
-          className="w-screen h-full flex-shrink-0 flex items-center justify-center p-2.5 sm:p-4 md:p-8 relative bg-black"
-        >
-          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-1rem)] md:max-h-[calc(100vh-4rem)] bg-black border-2 md:border-4 border-white flex flex-col justify-between p-3 md:p-8 lg:p-10 relative overflow-y-auto md:overflow-hidden">
-            {/* Header Area */}
-            <div className="border-b-2 md:border-b-4 border-white pb-2 md:pb-3 mb-3 md:mb-4 flex justify-between items-end flex-shrink-0">
-              <div>
-                <span className="font-mono text-[9px] md:text-xs text-zinc-400 font-bold uppercase tracking-widest block mb-1">
-                  TECHNICAL COMPETENCIES // AUTOMATION STACK
-                </span>
-                <h2 className="text-2xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter leading-none text-white">
-                  Core Skills
-                </h2>
-              </div>
-              <div className="hidden md:block font-mono text-xs text-zinc-400 font-bold text-right">
-                6 PRODUCTION CAPABILITIES<br/>OPERATIONAL &bull; SCRIPTED &bull; AI
-              </div>
-            </div>
-
-            {/* Balanced 6-Card Grid: Responsive across mobile and desktop */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 uppercase tracking-wider font-bold text-xs md:text-base text-white flex-1">
-              {/* Skill 1 */}
-              <div className="core-skill-item bg-zinc-950 border border-zinc-800 p-2.5 md:p-3.5 flex flex-col justify-between hover:border-white transition-colors">
-                <div className="text-xs md:text-sm mb-1.5 text-white">Microsoft Excel &amp; Advanced Formulas</div>
-                <div className="grid grid-cols-8 gap-1 h-4 md:h-5 mb-1.5">
-                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-                    <motion.div
-                      key={i}
-                      animate={{ opacity: [0.2, 1, 0.2] }}
-                      transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.12, ease: 'easeInOut' }}
-                      className="bg-white"
-                    />
-                  ))}
-                </div>
-                <span className="font-mono text-[9px] md:text-[10px] text-zinc-500 normal-case">VLOOKUP, INDEX/MATCH, glidepath modeling, pivot pipelines</span>
-              </div>
-
-              {/* Skill 2 */}
-              <div className="core-skill-item bg-zinc-950 border border-zinc-800 p-2.5 md:p-3.5 flex flex-col justify-between hover:border-white transition-colors">
-                <div className="text-xs md:text-sm mb-1.5 text-white">Workflow Automation &amp; PowerApps</div>
-                <div className="flex items-center gap-2 h-4 md:h-5 mb-1.5">
-                  <motion.div
-                    animate={{ rotate: 180 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: 'backInOut', repeatDelay: 0.5 }}
-                    className="w-3.5 h-3.5 md:w-4 md:h-4 bg-white flex-shrink-0"
-                  />
-                  <div className="flex-1 h-1 bg-zinc-800 relative overflow-hidden">
-                    <motion.div
-                      animate={{ x: ['-100%', '100%'] }}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
-                      className="absolute inset-0 bg-white"
-                    />
-                  </div>
-                  <motion.div
-                    animate={{ scale: [1, 0.5, 1] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                    className="w-3.5 h-3.5 md:w-4 md:h-4 bg-zinc-500 rounded-full flex-shrink-0"
-                  />
-                </div>
-                <span className="font-mono text-[9px] md:text-[10px] text-zinc-500 normal-case">End-to-end data pipeline automation &amp; operational flows</span>
-              </div>
-
-              {/* Skill 3 */}
-              <div className="core-skill-item bg-zinc-950 border border-zinc-800 p-2.5 md:p-3.5 flex flex-col justify-between hover:border-white transition-colors">
-                <div className="text-xs md:text-sm mb-1.5 text-white">Office Scripts &amp; TypeScript Automation</div>
-                <div className="h-4 md:h-5 bg-zinc-900 px-2 flex items-center overflow-hidden mb-1.5">
-                  <motion.div
-                    animate={{ width: ['0%', '100%', '100%', '0%'] }}
-                    transition={{ duration: 3.5, repeat: Infinity, repeatDelay: 1, ease: 'linear' }}
-                    className="font-mono text-[8px] md:text-xs text-zinc-300 whitespace-nowrap overflow-hidden"
-                  >
-                    <span className="text-red-400">const</span> <span className="text-blue-300">etl</span> = <span className="text-red-400">async</span> () =&gt; processSKU();
-                  </motion.div>
-                </div>
-                <span className="font-mono text-[9px] md:text-[10px] text-zinc-500 normal-case">TypeScript scripts for automated batch transformation</span>
-              </div>
-
-              {/* Skill 4 */}
-              <div className="core-skill-item bg-zinc-950 border border-zinc-800 p-2.5 md:p-3.5 flex flex-col justify-between hover:border-white transition-colors">
-                <div className="text-xs md:text-sm mb-1.5 text-white">Claude Projects &amp; MCP Tooling</div>
-                <div className="flex items-center gap-1.5 h-4 md:h-5 mb-1.5">
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                    <motion.div
-                      key={i}
-                      animate={{ height: ['20%', '100%', '20%'] }}
-                      transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.08, ease: 'easeInOut' }}
-                      className="flex-1 max-w-[7px] bg-white rounded-full"
-                    />
-                  ))}
-                </div>
-                <span className="font-mono text-[9px] md:text-[10px] text-zinc-500 normal-case">Model Context Protocol integration, scrapers, prompt systems</span>
-              </div>
-
-              {/* Skill 5 */}
-              <div className="core-skill-item bg-zinc-950 border border-zinc-800 p-2.5 md:p-3.5 flex flex-col justify-between hover:border-white transition-colors">
-                <div className="text-xs md:text-sm mb-1.5 text-white">Real-Time Operations &amp; Floor SME</div>
-                <div className="h-4 md:h-5 flex items-center border-l-2 border-red-500 bg-zinc-900 px-2 mb-1.5">
-                  <motion.div
-                    animate={{ opacity: [1, 0, 1] }}
-                    transition={{ duration: 0.8, repeat: Infinity }}
-                    className="w-2 h-2 rounded-full bg-red-500 mr-2"
-                  />
-                  <span className="font-mono text-[8px] md:text-xs text-red-400 tracking-wider font-bold uppercase">Live Floor Support</span>
-                </div>
-                <span className="font-mono text-[9px] md:text-[10px] text-zinc-500 normal-case">Tier-2 escalation dispatch, team calibration, mentorship</span>
-              </div>
-
-              {/* Skill 6 */}
-              <div className="core-skill-item bg-zinc-950 border border-zinc-800 p-2.5 md:p-3.5 flex flex-col justify-between hover:border-white transition-colors">
-                <div className="text-xs md:text-sm mb-1.5 text-white">Data QA &amp; Operations Reporting</div>
-                <div className="h-4 md:h-5 flex flex-col justify-between p-1 bg-black mb-1.5 relative overflow-hidden">
-                  <div className="w-full h-0.5 bg-zinc-800" />
-                  <div className="w-full h-0.5 bg-zinc-800" />
-                  <motion.div
-                    animate={{ x: ['-100%', '200%'] }}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
-                    className="absolute inset-y-0 w-1/4 bg-white/30 pointer-events-none"
-                  />
-                </div>
-                <span className="font-mono text-[9px] md:text-[10px] text-zinc-500 normal-case">Error auditing, SLA tracking, executive dashboards</span>
               </div>
             </div>
           </div>
