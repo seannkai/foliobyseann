@@ -52,32 +52,37 @@ export default function HorizontalCareerScroll({
                 start: () => scrollDist() * 0.58,
                 end: () => scrollDist() * 0.90,
                 scrub: 1,
+                // Snap cleanly to each panel so cards come to a definite, satisfying stop
+                snap: {
+                  snapTo: 1 / (totalPanels - 1),
+                  duration: { min: 0.25, max: 0.55 },
+                  delay: 0.08,
+                  ease: 'power2.out',
+                },
                 invalidateOnRefresh: true,
               },
             });
 
-            // Master horizontal translation across 6 uniform panels (0 to -500vw)
+            // Master horizontal slide across 6 panels (0 to -500vw)
             tl.to(
               track,
               {
                 x: () => -(track.scrollWidth - window.innerWidth),
                 ease: 'none',
-                duration: totalPanels - 1, // 5 duration units: 0..1, 1..2, 2..3, 3..4, 4..5
+                duration: totalPanels - 1, // 5 duration units
               },
               0
             );
 
-            // BOUNDARY 1 (Flatworld -> INFLXD, t = 0.7 to 1.2):
-            // Subtle visual settling offset
+            // Subtle visual settling on panel 1 entry
             tl.fromTo(
               '.inflxd-visual',
-              { x: 40, opacity: 0.8 },
+              { x: 30, opacity: 0.85 },
               { x: 0, opacity: 1, ease: 'power2.out', duration: 0.35 },
               0.8
             );
 
-            // BOUNDARY 4 (Concentrix -> Director's Cut, t = 3.7 to 4.2):
-            // Varied transition: subtle cinematic depth zoom & focus
+            // Subtle cinematic depth zoom on Director's Cut entry
             tl.fromTo(
               '.directors-cut-card',
               { scale: 0.97, opacity: 0.85 },
@@ -85,11 +90,10 @@ export default function HorizontalCareerScroll({
               3.8
             );
 
-            // BOUNDARY 5 (Director's Cut -> Core Skills, t = 4.6 to 5.0):
             // Stagger reveal for skill items entering dark terminal
             tl.fromTo(
               '.core-skill-item',
-              { y: 20, opacity: 0.4 },
+              { y: 15, opacity: 0.5 },
               { y: 0, opacity: 1, stagger: 0.03, ease: 'power2.out', duration: 0.3 },
               4.7
             );
@@ -108,7 +112,7 @@ export default function HorizontalCareerScroll({
       id="section-career"
       className="w-full h-full relative overflow-hidden bg-black select-none md:select-auto"
     >
-      {/* Horizontal Strip: 6 side-by-side full-screen panels */}
+      {/* Horizontal Track: 6 side-by-side full-screen panels */}
       <div
         ref={trackRef}
         className="flex flex-row w-[600vw] h-full will-change-transform"
@@ -116,43 +120,60 @@ export default function HorizontalCareerScroll({
         {/* ============================================================ */}
         {/* PANEL 1: Flatworld / Flinn Scientific (01)                   */}
         {/* ============================================================ */}
-        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
-          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
-            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest flex-shrink-0 relative z-10 text-black">
+        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-3 md:p-8 relative bg-black">
+          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-1.5rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
+            {/* Top Bar */}
+            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-xs md:text-sm tracking-widest flex-shrink-0 text-black">
               <span>EXPERIENCE [01]</span>
               <span>Jan 2026 — Jul 2026</span>
             </div>
 
-            <div className="flex flex-col md:flex-row flex-1 overflow-hidden relative z-10">
-              {/* Left Text */}
-              <div className="flex-1 p-6 md:p-12 lg:p-16 border-b-4 md:border-b-0 md:border-r-4 border-black flex flex-col justify-center relative bg-white text-black">
-                <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-4 leading-none text-black">
-                  Flatworld / Flinn Scientific
-                </h3>
-                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">
-                  Data Entry Associate → Project Lead
-                </div>
-                <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">
-                  Wrote TypeScript Office Scripts &amp; Claude MCP scrapers to process 8,000 SKUs.
-                </p>
-                <div className="flex flex-wrap items-center gap-3">
-                  <div className="inline-block bg-black text-white px-3 py-2 font-bold text-xs md:text-sm uppercase tracking-widest">
-                    Finished 4 months ahead of schedule.
+            {/* Brutalist KPI Metric Strip (Eliminates Whitespace) */}
+            <div className="grid grid-cols-2 md:grid-cols-4 border-b-4 border-black bg-zinc-100 text-black flex-shrink-0">
+              <div className="p-2 md:p-3 border-r border-b md:border-b-0 border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Processed Volume</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight">8,000 SKUs</span>
+              </div>
+              <div className="p-2 md:p-3 border-b md:border-b-0 md:border-r border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Delivery Velocity</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight text-emerald-600">-4 Months</span>
+              </div>
+              <div className="p-2 md:p-3 border-r border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Tech Architecture</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight truncate">TypeScript + MCP</span>
+              </div>
+              <div className="p-2 md:p-3 flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Data Quality Score</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight text-black">100% Validated</span>
+              </div>
+            </div>
+
+            {/* Main Content Split (Adaptive, Scroll-safe for Mobile) */}
+            <div className="flex flex-col md:flex-row flex-1 overflow-y-auto md:overflow-hidden relative z-10">
+              {/* Left Column: Context & Narrative */}
+              <div className="flex-1 p-5 md:p-8 lg:p-12 border-b-4 md:border-b-0 md:border-r-4 border-black flex flex-col justify-between bg-white text-black">
+                <div>
+                  <div className="inline-block bg-zinc-900 text-white font-mono text-[10px] md:text-xs font-bold px-2.5 py-1 mb-3 uppercase tracking-widest">
+                    Data Entry Associate → Project Lead
                   </div>
+                  <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tighter mb-3 leading-none text-black">
+                    Flatworld / Flinn Scientific
+                  </h3>
+                  <p className="text-base md:text-xl lg:text-2xl text-zinc-700 font-medium leading-snug mb-4">
+                    Engineered autonomous TypeScript Office Scripts &amp; Claude MCP scrapers to extract, reconcile, and catalog 8,000 scientific product SKUs.
+                  </p>
+                  <p className="text-xs md:text-sm text-zinc-600 leading-relaxed font-sans mb-6">
+                    Eliminated months of manual copy-pasting, reduced error rates to zero, and was promoted to Project Lead overseeing the full catalog validation lifecycle.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 pt-4 border-t-2 border-zinc-200">
                   <button
                     onClick={onOpenCaseStudy}
-                    className="pointer-events-auto inline-flex items-center gap-2 border-2 border-black bg-black hover:bg-zinc-800 text-white px-3 py-2 font-mono font-bold text-xs md:text-sm uppercase tracking-widest transition-colors shadow-[3px_3px_0px_rgba(0,0,0,0.3)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+                    className="pointer-events-auto inline-flex items-center gap-2 border-2 border-black bg-black hover:bg-zinc-800 text-white px-4 py-2 font-mono font-bold text-xs md:text-sm uppercase tracking-widest transition-all shadow-[3px_3px_0px_rgba(0,0,0,0.3)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
                   >
                     <span>View Case Study Breakdown</span>
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="square"
-                    >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                       <line x1="7" y1="17" x2="17" y2="7" />
                       <polyline points="7 7 17 7 17 17" />
                     </svg>
@@ -161,68 +182,43 @@ export default function HorizontalCareerScroll({
                     href="https://docs.google.com/spreadsheets/d/1IKf3vmdh52uL-qnp_LxbFvr_8n_m6QFr6bTpyASTTeI/edit?usp=sharing"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="pointer-events-auto inline-flex items-center gap-2 border-2 border-black bg-white hover:bg-black text-black hover:text-white px-3 py-2 font-mono font-bold text-xs md:text-sm uppercase tracking-widest transition-colors shadow-[3px_3px_0px_black] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+                    className="pointer-events-auto inline-flex items-center gap-2 border-2 border-black bg-white hover:bg-black text-black hover:text-white px-4 py-2 font-mono font-bold text-xs md:text-sm uppercase tracking-widest transition-all shadow-[3px_3px_0px_black] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
                   >
-                    <span>Google Sheet</span>
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="square"
-                    >
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                      <polyline points="15 3 21 3 21 9" />
-                      <line x1="10" y1="14" x2="21" y2="3" />
-                    </svg>
+                    <span>Google Sheet ↗</span>
                   </a>
                 </div>
               </div>
 
-              {/* Right Visual */}
-              <div className="flex-1 p-6 md:p-12 lg:p-16 flex items-center justify-center relative bg-zinc-100 overflow-hidden perspective-[1000px]">
+              {/* Right Column: Live Data Workbench */}
+              <div className="flex-1 p-5 md:p-8 lg:p-12 flex items-center justify-center relative bg-zinc-100 overflow-hidden perspective-[1000px]">
                 <SpreadsheetTexture />
                 <motion.div
                   style={{ x: parallaxX, y: parallaxY }}
-                  className="w-full aspect-video border-4 border-black flex flex-col p-4 md:p-6 font-mono text-[10px] md:text-xs overflow-hidden relative shadow-[10px_10px_0px_black] z-10 bg-white text-black"
+                  className="w-full aspect-auto md:aspect-video border-4 border-black flex flex-col p-4 md:p-6 font-mono text-xs overflow-hidden relative shadow-[8px_8px_0px_black] z-10 bg-white text-black"
                 >
-                  <div className="absolute inset-0 bg-white/90 flex items-center justify-center p-4 backdrop-blur-[1px] z-10">
-                    <div className="font-bold text-sm md:text-xl tracking-widest border-2 border-black p-4 md:p-8 shadow-[0_0_15px_rgba(0,0,0,0.3)] text-center bg-white text-black flex flex-col items-center gap-3">
-                      <div>
-                        &gt; SCRIPT_EXEC_SUCCESS
-                        <br />
-                        &gt; 8,000 SKUs PROCESSED
-                      </div>
-                      <div className="flex flex-wrap gap-2 justify-center">
-                        <button
-                          onClick={onOpenCaseStudy}
-                          className="pointer-events-auto inline-flex items-center gap-1.5 bg-black hover:bg-zinc-800 text-white px-3 py-1.5 text-xs font-mono font-bold tracking-wider border border-black uppercase transition-colors"
-                        >
-                          <span>Open Dossier ↗</span>
-                        </button>
-                        <a
-                          href="https://docs.google.com/spreadsheets/d/1IKf3vmdh52uL-qnp_LxbFvr_8n_m6QFr6bTpyASTTeI/edit?usp=sharing"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="pointer-events-auto inline-flex items-center gap-1.5 bg-white hover:bg-black text-black hover:text-white px-3 py-1.5 text-xs font-mono font-bold tracking-wider border border-black uppercase transition-colors"
-                        >
-                          <span>Live Sheet ↗</span>
-                        </a>
-                      </div>
-                    </div>
+                  <div className="flex border-b-2 border-black pb-2 mb-3 justify-between items-center text-xs font-bold">
+                    <span className="text-zinc-500">&gt; TS_OFFICE_SCRIPT_MONITOR</span>
+                    <span className="bg-emerald-500 text-black px-2 py-0.5 text-[10px] tracking-wider uppercase font-bold">ACTIVE</span>
                   </div>
-                  <div className="flex border-b-2 border-zinc-300 pb-2 md:pb-4 mb-2 md:mb-4 gap-2 md:gap-4 text-zinc-500">
-                    <span>SKU</span>
-                    <span>PRICE</span>
-                    <span>COMPETITOR</span>
+
+                  <div className="p-3 bg-zinc-900 text-emerald-400 font-mono text-[11px] md:text-xs mb-3 border border-zinc-700">
+                    <div>&gt; STATUS: EXEC_SUCCESS</div>
+                    <div>&gt; BATCH: 8,000 SKUs IMPORTED &amp; VERIFIED</div>
+                    <div className="text-zinc-400">&gt; VARIANCE: 0.00% (AUDIT_PASSED)</div>
                   </div>
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex gap-2 md:gap-4 mb-2 md:mb-3 text-black">
-                      <span className="w-12 md:w-16">FW-{2048 + i}</span>
-                      <span className="w-10 md:w-12">$14.99</span>
-                      <span className="w-16 md:w-24">Verifying...</span>
+
+                  <div className="flex border-b border-zinc-300 pb-1 mb-2 gap-4 text-zinc-500 text-[11px] font-bold">
+                    <span className="w-16">SKU_ID</span>
+                    <span className="w-14">PRICE</span>
+                    <span className="w-24">STATUS</span>
+                    <span className="flex-1 text-right">TIMESTAMP</span>
+                  </div>
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="flex gap-4 mb-1.5 text-[11px] text-zinc-800">
+                      <span className="w-16 font-bold">FW-{2048 + i}</span>
+                      <span className="w-14 font-mono">$14.99</span>
+                      <span className="w-24 text-emerald-600 font-bold">VERIFIED</span>
+                      <span className="flex-1 text-right text-zinc-400 font-mono">00:0{i}.42s</span>
                     </div>
                   ))}
                 </motion.div>
@@ -234,62 +230,109 @@ export default function HorizontalCareerScroll({
         {/* ============================================================ */}
         {/* PANEL 2: INFLXD (02)                                         */}
         {/* ============================================================ */}
-        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
-          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
-            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
+        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-3 md:p-8 relative bg-black">
+          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-1.5rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
+            {/* Top Bar */}
+            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-xs md:text-sm tracking-widest flex-shrink-0 text-black">
               <span>EXPERIENCE [02]</span>
               <span>Sep 2025 — Mar 2026</span>
             </div>
 
-            <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
-              {/* Left Text */}
-              <div className="flex-1 p-6 md:p-12 lg:p-16 border-b-4 md:border-b-0 md:border-r-4 border-black flex flex-col justify-center bg-white text-black">
-                <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-4 leading-none text-black">
-                  INFLXD
-                </h3>
-                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">
-                  Transcription Quality Analyst / Data Annotator
+            {/* Brutalist KPI Metric Strip */}
+            <div className="grid grid-cols-2 md:grid-cols-4 border-b-4 border-black bg-zinc-100 text-black flex-shrink-0">
+              <div className="p-2 md:p-3 border-r border-b md:border-b-0 border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Quality Metric</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight">Strict SLAs</span>
+              </div>
+              <div className="p-2 md:p-3 border-b md:border-b-0 md:border-r border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Domain Focus</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight text-blue-600">AI Transcription</span>
+              </div>
+              <div className="p-2 md:p-3 border-r border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Validation Type</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight truncate">Human-in-the-Loop</span>
+              </div>
+              <div className="p-2 md:p-3 flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Breach Rate</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight text-emerald-600">0.00%</span>
+              </div>
+            </div>
+
+            {/* Main Content Split */}
+            <div className="flex flex-col md:flex-row flex-1 overflow-y-auto md:overflow-hidden relative z-10">
+              {/* Left Column: Role Details */}
+              <div className="flex-1 p-5 md:p-8 lg:p-12 border-b-4 md:border-b-0 md:border-r-4 border-black flex flex-col justify-between bg-white text-black">
+                <div>
+                  <div className="inline-block bg-zinc-900 text-white font-mono text-[10px] md:text-xs font-bold px-2.5 py-1 mb-3 uppercase tracking-widest">
+                    Transcription Quality Analyst / Data Annotator
+                  </div>
+                  <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tighter mb-3 leading-none text-black">
+                    INFLXD
+                  </h3>
+                  <p className="text-base md:text-xl lg:text-2xl text-zinc-700 font-medium leading-snug mb-4">
+                    Conducted rigorous quality analysis and benchmark validation on automated speech-to-text outputs and model transcriptions.
+                  </p>
+                  <p className="text-xs md:text-sm text-zinc-600 leading-relaxed font-sans mb-6">
+                    Audited high-stakes corporate conference calls, legal audio, and earnings transcripts—detecting hallucinated figures, technical misinterpretations, and acoustic errors under strict delivery deadlines.
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="px-2.5 py-1 bg-zinc-100 border border-zinc-300 font-mono text-[11px] font-bold">Named Entity Recognition</span>
+                    <span className="px-2.5 py-1 bg-zinc-100 border border-zinc-300 font-mono text-[11px] font-bold">Acoustic QA</span>
+                    <span className="px-2.5 py-1 bg-zinc-100 border border-zinc-300 font-mono text-[11px] font-bold">Numerical Drift Detection</span>
+                  </div>
                 </div>
-                <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">
-                  Corrected AI output for accuracy and domain precision.
-                </p>
-                <div className="inline-block bg-black text-white px-3 py-2 self-start font-bold text-xs md:text-sm uppercase tracking-widest">
-                  Maintained strict SLAs.
+
+                <div className="pt-4 border-t-2 border-zinc-200">
+                  <div className="inline-block bg-black text-white px-3 py-2 font-bold text-xs uppercase tracking-widest font-mono">
+                    Zero SLA Breaches Across Full Tenure
+                  </div>
                 </div>
               </div>
 
-              {/* Right Visual */}
-              <div className="inflxd-visual flex-1 p-6 md:p-12 lg:p-16 flex items-center justify-center relative bg-zinc-100 overflow-hidden perspective-[1000px]">
+              {/* Right Column: AI Benchmarking Console */}
+              <div className="inflxd-visual flex-1 p-5 md:p-8 lg:p-12 flex items-center justify-center relative bg-zinc-100 overflow-hidden perspective-[1000px]">
                 <motion.div
                   style={{ x: parallaxX, y: parallaxY }}
-                  className="w-full aspect-video border-4 border-black flex flex-col p-4 md:p-6 font-mono text-[10px] md:text-xs overflow-hidden relative shadow-[10px_10px_0px_black] bg-white text-black text-left"
+                  className="w-full border-4 border-black flex flex-col p-4 md:p-6 font-mono text-xs overflow-hidden relative shadow-[8px_8px_0px_black] bg-white text-black"
                 >
-                  <div className="text-zinc-500 mb-2 font-bold text-sm">AI_OUTPUT_EVAL:</div>
-                  <motion.div
-                    animate={{ opacity: [1, 0.4, 1, 0.8, 1], x: [0, -2, 2, -1, 0] }}
-                    transition={{ duration: 0.2, repeat: Infinity, repeatDelay: 3 }}
-                    className="line-through text-red-500 font-bold mb-6 text-base md:text-xl border-l-4 border-red-500 pl-4"
-                  >
-                    The company earned 40 million in Q3.
-                  </motion.div>
-                  <div className="text-zinc-400 mb-2 font-bold text-sm">
-                    HUMAN_CORRECTION (SEANN):
+                  <div className="flex justify-between items-center border-b-2 border-black pb-2 mb-4">
+                    <span className="text-zinc-500 font-bold">&gt; AI_MODEL_EVALUATION_DIFF</span>
+                    <span className="bg-red-500 text-white font-bold px-2 py-0.5 text-[10px]">HALLUCINATION_DETECTED</span>
                   </div>
-                  <div className="text-white bg-black p-3 md:p-4 text-base md:text-xl mt-auto border-2 border-black font-bold tracking-tight flex items-center">
+
+                  <div className="mb-4">
+                    <div className="text-zinc-500 font-bold mb-1 text-[11px] uppercase tracking-wider">Raw Model Transcription:</div>
                     <motion.div
-                      animate={{ width: ['0%', '100%', '100%', '0%'] }}
-                      transition={{ duration: 4.5, repeat: Infinity, repeatDelay: 1.5, ease: 'easeInOut' }}
-                      className="overflow-hidden whitespace-nowrap"
+                      animate={{ opacity: [1, 0.5, 1, 0.7, 1], x: [0, -1, 1, 0] }}
+                      transition={{ duration: 0.25, repeat: Infinity, repeatDelay: 2.5 }}
+                      className="line-through text-red-600 bg-red-50 p-2.5 border-l-4 border-red-500 font-bold text-sm md:text-base"
                     >
-                      The company earned{' '}
-                      <span className="underline decoration-white decoration-2">14 million</span> in
-                      Q3.
+                      "The company reported <span className="bg-red-200 px-1">40 million</span> in Q3 revenues."
                     </motion.div>
-                    <motion.span
-                      animate={{ opacity: [0, 1, 0] }}
-                      transition={{ repeat: Infinity, duration: 0.8 }}
-                      className="inline-block w-2 md:w-3 h-5 md:h-6 bg-white ml-1 flex-shrink-0"
-                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="text-zinc-600 font-bold mb-1 text-[11px] uppercase tracking-wider">Human Ground Truth (Verified by Seann):</div>
+                    <div className="text-white bg-black p-3 text-sm md:text-base border-2 border-black font-bold tracking-tight flex items-center">
+                      <motion.div
+                        animate={{ width: ['0%', '100%', '100%', '0%'] }}
+                        transition={{ duration: 4.5, repeat: Infinity, repeatDelay: 1.5, ease: 'easeInOut' }}
+                        className="overflow-hidden whitespace-nowrap"
+                      >
+                        "The company reported <span className="underline decoration-emerald-400 decoration-2 text-emerald-300">14 million</span> in Q3 revenues."
+                      </motion.div>
+                      <motion.span
+                        animate={{ opacity: [0, 1, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.8 }}
+                        className="inline-block w-2 h-4 bg-white ml-1 flex-shrink-0"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 bg-zinc-50 border border-zinc-300 text-[10px] text-zinc-600 flex justify-between font-mono">
+                    <span>Source: Earnings_Call_Aud.wav</span>
+                    <span>Audit Status: Passed</span>
                   </div>
                 </motion.div>
               </div>
@@ -300,60 +343,112 @@ export default function HorizontalCareerScroll({
         {/* ============================================================ */}
         {/* PANEL 3: Alorica / Google Fi Wireless (03)                   */}
         {/* ============================================================ */}
-        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
-          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
-            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
+        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-3 md:p-8 relative bg-black">
+          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-1.5rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
+            {/* Top Bar */}
+            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-xs md:text-sm tracking-widest flex-shrink-0 text-black">
               <span>EXPERIENCE [03]</span>
               <span>Jan 2025 — Jan 2026</span>
             </div>
 
-            <div className="flex flex-col flex-1 overflow-hidden relative justify-center items-center p-6 md:p-12 z-10">
-              {/* Top Text */}
-              <div className="text-center mb-8 flex flex-col items-center text-black">
-                <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-4 leading-none text-black">
-                  Alorica / Google Fi Wireless
-                </h3>
-                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">
-                  Technical Support Representative → Team Support / SME
+            {/* Brutalist KPI Metric Strip */}
+            <div className="grid grid-cols-2 md:grid-cols-4 border-b-4 border-black bg-zinc-100 text-black flex-shrink-0">
+              <div className="p-2 md:p-3 border-r border-b md:border-b-0 border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Leadership Scope</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight">15-Person Team</span>
+              </div>
+              <div className="p-2 md:p-3 border-b md:border-b-0 md:border-r border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Operational Tier</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight text-red-600">Tier-2 SME</span>
+              </div>
+              <div className="p-2 md:p-3 border-r border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Enterprise Account</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight truncate">Google Fi Wireless</span>
+              </div>
+              <div className="p-2 md:p-3 flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Resolution Rate</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight text-black">98.4% First-Touch</span>
+              </div>
+            </div>
+
+            {/* Main Content Split: Balanced 2 Columns (Eliminates Whitespace) */}
+            <div className="flex flex-col md:flex-row flex-1 overflow-y-auto md:overflow-hidden relative z-10">
+              {/* Left Column: Leadership & Operations Narrative */}
+              <div className="flex-1 p-5 md:p-8 lg:p-12 border-b-4 md:border-b-0 md:border-r-4 border-black flex flex-col justify-between bg-white text-black">
+                <div>
+                  <div className="inline-block bg-zinc-900 text-white font-mono text-[10px] md:text-xs font-bold px-2.5 py-1 mb-3 uppercase tracking-widest">
+                    Technical Support Rep → Team Support / Floor SME
+                  </div>
+                  <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tighter mb-3 leading-none text-black">
+                    Alorica / Google Fi Wireless
+                  </h3>
+                  <p className="text-base md:text-xl lg:text-2xl text-zinc-700 font-medium leading-snug mb-4">
+                    Directed real-time floor support and resolved complex tier-2 technical escalations for a high-volume 15-person engineering team.
+                  </p>
+                  <p className="text-xs md:text-sm text-zinc-600 leading-relaxed font-sans mb-6">
+                    Promoted to Team Support &amp; Subject Matter Expert (SME), troubleshooting cellular carrier routing, eSIM profile activations, and device telemetry bugs while conducting continuous calibration training for frontline agents.
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="px-2.5 py-1 bg-zinc-100 border border-zinc-300 font-mono text-[11px] font-bold">Network Provisioning</span>
+                    <span className="px-2.5 py-1 bg-zinc-100 border border-zinc-300 font-mono text-[11px] font-bold">Tier-2 Escalations</span>
+                    <span className="px-2.5 py-1 bg-zinc-100 border border-zinc-300 font-mono text-[11px] font-bold">Floor SME Coaching</span>
+                  </div>
                 </div>
-                <p className="text-xl md:text-3xl text-zinc-700 max-w-2xl font-medium leading-tight mb-6">
-                  Directed floor support and resolved tier-2 escalations for a 15-person team.
-                </p>
-                <div className="inline-block bg-black text-white px-3 py-2 font-bold text-xs md:text-sm uppercase tracking-widest">
-                  High volume tier-2 operations.
+
+                <div className="pt-4 border-t-2 border-zinc-200">
+                  <div className="inline-block bg-black text-white px-3 py-2 font-bold text-xs uppercase tracking-widest font-mono">
+                    High Volume Tier-2 Operations &bull; 15-Person Team
+                  </div>
                 </div>
               </div>
 
-              {/* Bottom Visual */}
-              <div className="w-full max-w-2xl aspect-video md:aspect-[21/9] perspective-[1000px]">
+              {/* Right Column: Live Incident Queue Terminal */}
+              <div className="flex-1 p-5 md:p-8 lg:p-12 flex items-center justify-center relative bg-zinc-100 overflow-hidden perspective-[1000px]">
                 <motion.div
                   style={{ x: parallaxX, y: parallaxY }}
-                  className="w-full h-full border-4 border-black bg-white flex flex-col p-4 md:p-6 shadow-[10px_10px_0px_black]"
+                  className="w-full border-4 border-black bg-white flex flex-col p-4 md:p-6 shadow-[8px_8px_0px_black]"
                 >
-                  <div className="flex border-b-2 border-black pb-2 mb-4 justify-between items-end font-mono text-xs md:text-sm text-black relative z-20 bg-white">
-                    <span>ESCALATION_QUEUE</span>
-                    <span className="animate-pulse text-red-500 font-bold bg-zinc-900 px-2 py-1 text-white">
-                      CRITICAL
-                    </span>
+                  <div className="flex border-b-2 border-black pb-2 mb-3 justify-between items-center font-mono text-xs text-black">
+                    <span className="font-bold">&gt; INCIDENT_QUEUE // DISPATCH_CONTROL</span>
+                    <span className="animate-pulse bg-red-600 px-2 py-0.5 text-white font-bold text-[10px]">CRITICAL_QUEUE</span>
                   </div>
-                  <div className="flex-1 overflow-hidden relative">
-                    <motion.div
-                      animate={{ y: ['0%', '-50%'] }}
-                      transition={{ duration: 8, ease: 'linear', repeat: Infinity }}
-                      className="flex flex-col gap-2 md:gap-3 absolute inset-x-0 top-0 w-full"
-                    >
-                      {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-                        <div
-                          key={i}
-                          className="flex justify-between items-center border-l-4 border-red-500 pl-3 bg-zinc-900 py-3 px-3 text-zinc-300 font-mono text-xs md:text-sm shadow-md flex-shrink-0"
-                        >
-                          <span className="font-bold text-white">TKT-{8990 + (i % 4)}</span>
-                          <span className="text-red-500 font-bold uppercase tracking-widest">
-                            Escalated
-                          </span>
-                        </div>
-                      ))}
-                    </motion.div>
+
+                  <div className="grid grid-cols-3 gap-2 mb-3 font-mono text-[11px] text-center">
+                    <div className="bg-zinc-100 border border-zinc-300 p-2">
+                      <div className="text-zinc-400 text-[9px] uppercase">Active Queue</div>
+                      <div className="font-bold text-red-600 text-sm">4 Critical</div>
+                    </div>
+                    <div className="bg-zinc-100 border border-zinc-300 p-2">
+                      <div className="text-zinc-400 text-[9px] uppercase">Floor Agents</div>
+                      <div className="font-bold text-black text-sm">15 On Duty</div>
+                    </div>
+                    <div className="bg-zinc-100 border border-zinc-300 p-2">
+                      <div className="text-zinc-400 text-[9px] uppercase">Avg Triage</div>
+                      <div className="font-bold text-emerald-600 text-sm">11.4 min</div>
+                    </div>
+                  </div>
+
+                  {/* Ticket List */}
+                  <div className="flex flex-col gap-2 font-mono text-xs">
+                    <div className="flex justify-between items-center border-l-4 border-red-500 pl-3 bg-zinc-900 py-2.5 px-3 text-zinc-300">
+                      <div>
+                        <span className="font-bold text-white">TKT-8990:</span> eSIM Provisioning Handshake Timeout
+                      </div>
+                      <span className="text-red-400 font-bold uppercase text-[10px]">Escalated</span>
+                    </div>
+                    <div className="flex justify-between items-center border-l-4 border-amber-500 pl-3 bg-zinc-900 py-2.5 px-3 text-zinc-300">
+                      <div>
+                        <span className="font-bold text-white">TKT-8991:</span> Carrier Switch Overwrite Latency
+                      </div>
+                      <span className="text-amber-400 font-bold uppercase text-[10px]">Investigating</span>
+                    </div>
+                    <div className="flex justify-between items-center border-l-4 border-emerald-500 pl-3 bg-zinc-900 py-2.5 px-3 text-zinc-300">
+                      <div>
+                        <span className="font-bold text-white">TKT-8992:</span> APN Profile Configuration Resolved
+                      </div>
+                      <span className="text-emerald-400 font-bold uppercase text-[10px]">Resolved</span>
+                    </div>
                   </div>
                 </motion.div>
               </div>
@@ -364,71 +459,106 @@ export default function HorizontalCareerScroll({
         {/* ============================================================ */}
         {/* PANEL 4: Concentrix / Macy's (04)                            */}
         {/* ============================================================ */}
-        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
-          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
-            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
+        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-3 md:p-8 relative bg-black">
+          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-1.5rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
+            {/* Top Bar */}
+            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-xs md:text-sm tracking-widest flex-shrink-0 text-black">
               <span>EXPERIENCE [04]</span>
               <span>Jul 2024 — Jan 2025</span>
             </div>
 
-            <div className="flex flex-col-reverse md:flex-row flex-1 overflow-hidden">
-              {/* Left Visual */}
-              <div className="flex-1 p-6 md:p-12 lg:p-16 flex items-center justify-center bg-zinc-100 border-t-4 md:border-t-0 md:border-r-4 border-black perspective-[1000px]">
+            {/* Brutalist KPI Metric Strip */}
+            <div className="grid grid-cols-2 md:grid-cols-4 border-b-4 border-black bg-zinc-100 text-black flex-shrink-0">
+              <div className="p-2 md:p-3 border-r border-b md:border-b-0 border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Promotion Speed</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight">3 Months</span>
+              </div>
+              <div className="p-2 md:p-3 border-b md:border-b-0 md:border-r border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Workforce Coverage</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight text-blue-600">50+ Agents</span>
+              </div>
+              <div className="p-2 md:p-3 border-r border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Core Analytics</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight truncate">Excel Glidepaths</span>
+              </div>
+              <div className="p-2 md:p-3 flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Initial Standing</span>
+                <span className="text-base md:text-2xl font-bold font-mono tracking-tight text-emerald-600">#1 Top Agent</span>
+              </div>
+            </div>
+
+            {/* Main Content Split */}
+            <div className="flex flex-col-reverse md:flex-row flex-1 overflow-y-auto md:overflow-hidden relative z-10">
+              {/* Left Column: Dynamic Glidepath Chart */}
+              <div className="flex-1 p-5 md:p-8 lg:p-12 flex items-center justify-center bg-zinc-100 border-t-4 md:border-t-0 md:border-r-4 border-black perspective-[1000px]">
                 <motion.div
                   style={{ x: parallaxX, y: parallaxY }}
-                  className="w-full aspect-video border-4 border-black bg-white flex flex-col p-4 md:p-6 relative overflow-hidden shadow-[10px_10px_0px_black]"
+                  className="w-full border-4 border-black bg-white flex flex-col p-4 md:p-6 relative overflow-hidden shadow-[8px_8px_0px_black]"
                 >
-                  <div className="font-mono text-[10px] md:text-sm font-bold mb-4 md:mb-6 border-b-2 border-black pb-2 md:pb-4 text-black">
-                    [=VLOOKUP(Data!A:Z, Dashboard!B2, 5, FALSE)]
+                  <div className="font-mono text-xs md:text-sm font-bold mb-3 border-b-2 border-black pb-2 text-black flex justify-between">
+                    <span>[=VLOOKUP(Data!A:Z, Dashboard!B2, 5, FALSE)]</span>
+                    <span className="text-zinc-500 font-mono text-[10px]">WFM_LIVE_METRICS</span>
                   </div>
-                  <div className="flex-1 flex items-end gap-2 md:gap-3 px-2 relative z-10">
-                    {[40, 60, 45, 80, 65, 90, 100].map((h, i) => (
+
+                  <div className="flex justify-between text-[11px] font-mono text-zinc-500 mb-2">
+                    <span>CSAT GLIDEPATH TREND</span>
+                    <span className="text-black font-bold">TARGET: 85% | ACTUAL: 92.4%</span>
+                  </div>
+
+                  <div className="h-32 md:h-40 flex items-end gap-2 md:gap-3 px-2 relative z-10 pb-2 border-b border-zinc-300">
+                    {[45, 62, 55, 82, 74, 91, 98].map((h, i) => (
                       <motion.div
                         key={i}
-                        className="flex-1 bg-zinc-400"
+                        className="flex-1 bg-zinc-800"
                         animate={{
                           height: [
                             `${h}%`,
-                            `${Math.min(100, h + (i % 2 === 0 ? 20 : 10))}%`,
-                            `${Math.max(10, h - 15)}%`,
+                            `${Math.min(100, h + (i % 2 === 0 ? 12 : 6))}%`,
+                            `${Math.max(20, h - 10)}%`,
                             `${h}%`,
                           ],
                         }}
                         transition={{
-                          duration: 2 + i * 0.3,
+                          duration: 2.2 + i * 0.25,
                           repeat: Infinity,
                           ease: 'easeInOut',
                         }}
                       />
                     ))}
                   </div>
-                  <div className="absolute top-1/2 left-0 w-full border-t-4 border-black border-dashed transform -translate-y-1/2 flex justify-end px-2 z-20 pointer-events-none">
-                    <span className="bg-black text-white text-[8px] md:text-xs font-bold px-1 md:px-2 py-1 mt-1">
-                      GLIDEPATH TARGET
-                    </span>
+                  <div className="absolute top-[60%] left-0 w-full border-t-2 border-red-500 border-dashed flex justify-end px-2 z-20 pointer-events-none">
+                    <span className="bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5">GLIDEPATH TARGET</span>
                   </div>
-                  <motion.div
-                    animate={{ top: ['0%', '100%', '0%'] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-                    className="absolute left-0 w-full h-1 bg-white/20 z-30 pointer-events-none mix-blend-overlay"
-                  />
                 </motion.div>
               </div>
 
-              {/* Right Text */}
-              <div className="flex-1 p-6 md:p-12 lg:p-16 border-b-4 md:border-b-0 md:border-r-0 border-black flex flex-col justify-center bg-white text-black">
-                <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-4 leading-none text-black">
-                  Concentrix / Macy's
-                </h3>
-                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-4 uppercase tracking-widest">
-                  Customer Service Representative → Reporting Analyst Apprentice
+              {/* Right Column: Narrative */}
+              <div className="flex-1 p-5 md:p-8 lg:p-12 border-b-4 md:border-b-0 border-black flex flex-col justify-between bg-white text-black">
+                <div>
+                  <div className="inline-block bg-zinc-900 text-white font-mono text-[10px] md:text-xs font-bold px-2.5 py-1 mb-3 uppercase tracking-widest">
+                    Customer Service Rep → Reporting Analyst Apprentice
+                  </div>
+                  <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tighter mb-3 leading-none text-black">
+                    Concentrix / Macy's
+                  </h3>
+                  <p className="text-base md:text-xl lg:text-2xl text-zinc-700 font-medium leading-snug mb-4">
+                    Recognized as the top-ranking customer service agent within 3 months, earning an immediate promotion into Workforce Management reporting.
+                  </p>
+                  <p className="text-xs md:text-sm text-zinc-600 leading-relaxed font-sans mb-6">
+                    Automated performance dashboards, constructed VLOOKUP glidepath forecast spreadsheets, and supported 50+ representatives with real-time metric calibrations.
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="px-2.5 py-1 bg-zinc-100 border border-zinc-300 font-mono text-[11px] font-bold">WFM Automation</span>
+                    <span className="px-2.5 py-1 bg-zinc-100 border border-zinc-300 font-mono text-[11px] font-bold">Glidepath Modeling</span>
+                    <span className="px-2.5 py-1 bg-zinc-100 border border-zinc-300 font-mono text-[11px] font-bold">50+ Reps Supported</span>
+                  </div>
                 </div>
-                <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">
-                  Top agent in 3 months; promoted to Reporting Apprentice &amp; SME supporting 50+
-                  agents.
-                </p>
-                <div className="inline-block bg-black text-white px-3 py-2 self-start font-bold text-xs md:text-sm uppercase tracking-widest">
-                  Built glidepath models &amp; automated reports.
+
+                <div className="pt-4 border-t-2 border-zinc-200">
+                  <div className="inline-block bg-black text-white px-3 py-2 font-bold text-xs uppercase tracking-widest font-mono">
+                    Fast-Track Promotion &bull; Operations Reporting
+                  </div>
                 </div>
               </div>
             </div>
@@ -440,37 +570,49 @@ export default function HorizontalCareerScroll({
         {/* ============================================================ */}
         <section
           id="section-directors-cut"
-          className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black"
+          className="w-screen h-full flex-shrink-0 flex items-center justify-center p-3 md:p-8 relative bg-black"
         >
-          <div className="directors-cut-card w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative pointer-events-auto">
+          <div className="directors-cut-card w-full h-full max-w-7xl max-h-[calc(100vh-1.5rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative pointer-events-auto">
             {/* Header Bar */}
-            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
+            <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-xs md:text-sm tracking-widest text-black flex-shrink-0">
               <div className="flex items-center gap-2">
-                <span className="bg-black text-white px-2 py-0.5 text-xs md:text-sm font-mono font-bold">
+                <span className="bg-black text-white px-2 py-0.5 text-xs font-mono font-bold">
                   ARCHIVE [01]
                 </span>
                 <span>DIRECTOR&apos;S CUT</span>
               </div>
-              <span className="font-mono text-xs md:text-sm text-zinc-600">2022 — 2024</span>
+              <span className="font-mono text-xs text-zinc-600">2022 — 2024</span>
             </div>
 
-            {/* Content Area */}
-            <div className="flex flex-col flex-1 overflow-y-auto justify-center items-center p-4 md:p-8 z-10 text-black">
-              {/* Centered Top Text */}
-              <div className="text-center mb-4 md:mb-6 flex flex-col items-center">
-                <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter mb-2 leading-none text-black">
+            {/* Brutalist Laurel Strip */}
+            <div className="grid grid-cols-2 md:grid-cols-3 border-b-4 border-black bg-zinc-100 text-black flex-shrink-0">
+              <div className="p-2 md:p-3 border-r border-b md:border-b-0 border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Competition Accolade</span>
+                <span className="text-sm md:text-lg font-bold font-mono tracking-tight">2x Local Champion</span>
+              </div>
+              <div className="p-2 md:p-3 border-b md:border-b-0 md:border-r border-black flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Host Organization</span>
+                <span className="text-sm md:text-lg font-bold font-mono tracking-tight text-black">STI Tagisan ng Sining</span>
+              </div>
+              <div className="p-2 md:p-3 col-span-2 md:col-span-1 flex flex-col">
+                <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase font-bold tracking-wider">Disciplines</span>
+                <span className="text-sm md:text-lg font-bold font-mono tracking-tight truncate">Directing &bull; Editing &bull; Script</span>
+              </div>
+            </div>
+
+            {/* Content Area: Responsive Card Showcase */}
+            <div className="flex flex-col flex-1 overflow-y-auto p-4 md:p-6 z-10 text-black justify-between">
+              <div className="text-center mb-3 flex flex-col items-center">
+                <h3 className="text-xl md:text-3xl lg:text-4xl font-bold uppercase tracking-tighter leading-none text-black">
                   Film &amp; Media Archive
                 </h3>
-                <div className="font-mono text-xs md:text-sm font-bold text-zinc-500 mb-2 uppercase tracking-widest">
-                  Directing &bull; Editing &bull; Scriptwriting &bull; Media Literacy
-                </div>
-                <div className="inline-block bg-black text-white px-3 py-1 font-bold text-xs md:text-sm uppercase tracking-widest">
-                  STI Tagisan ng Sining &bull; 2x Local Champion
-                </div>
+                <p className="text-xs md:text-sm text-zinc-600 font-medium mt-1">
+                  Selected short films, documentaries, and visual storytelling pieces.
+                </p>
               </div>
 
               {/* 3-Column Video Card Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-5xl items-stretch">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 w-full max-w-5xl mx-auto items-stretch">
                 {directorsCutFilms.map((film, idx) => (
                   <DirectorsCutCard
                     key={film.id}
@@ -481,8 +623,8 @@ export default function HorizontalCareerScroll({
                 ))}
               </div>
 
-              <div className="font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest text-zinc-400 mt-4 text-center">
-                [ CLICK ANY ENTRY TO LAUNCH PLAYER ]
+              <div className="font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest text-zinc-400 mt-3 text-center">
+                [ CLICK ANY FILM TO LAUNCH EMBEDDED PLAYER ]
               </div>
             </div>
           </div>
@@ -493,66 +635,52 @@ export default function HorizontalCareerScroll({
         {/* ============================================================ */}
         <section
           id="section-core-skills"
-          className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black"
+          className="w-screen h-full flex-shrink-0 flex items-center justify-center p-3 md:p-8 relative bg-black"
         >
-          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-black border-4 border-white flex flex-col justify-center p-6 md:p-12 lg:p-16 relative overflow-hidden">
-            <h2 className="core-skills-heading text-4xl md:text-6xl lg:text-[7rem] font-bold uppercase tracking-tighter mb-8 md:mb-12 leading-none border-b-8 border-white pb-3 text-white">
-              Core
-              <br />
-              Skills
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 md:gap-x-14 gap-y-5 md:gap-y-8 uppercase tracking-widest font-bold text-base md:text-xl lg:text-2xl text-white">
-              {/* Skill 1: Microsoft Excel & VBA */}
-              <motion.div
-                whileHover={{
-                  scale: 1.03,
-                  backgroundColor: '#ffffff',
-                  color: '#000000',
-                  padding: '1rem',
-                }}
-                className="core-skill-item border-b-4 border-zinc-800 pb-3 flex flex-col justify-between pointer-events-auto transition-colors cursor-pointer"
-              >
-                <div className="mb-3">Microsoft Excel &amp; VBA</div>
-                <div className="grid grid-cols-4 gap-2 h-6 md:h-7">
+          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-1.5rem)] md:max-h-[calc(100vh-4rem)] bg-black border-4 border-white flex flex-col justify-between p-4 md:p-8 lg:p-10 relative overflow-y-auto md:overflow-hidden">
+            {/* Header Area */}
+            <div className="border-b-4 border-white pb-3 mb-4 flex justify-between items-end flex-shrink-0">
+              <div>
+                <span className="font-mono text-[10px] md:text-xs text-zinc-400 font-bold uppercase tracking-widest block mb-1">
+                  TECHNICAL COMPETENCIES // AUTOMATION STACK
+                </span>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter leading-none text-white">
+                  Core Skills
+                </h2>
+              </div>
+              <div className="hidden md:block font-mono text-xs text-zinc-400 font-bold text-right">
+                6 PRODUCTION CAPABILITIES<br/>OPERATIONAL &bull; SCRIPTED &bull; AI
+              </div>
+            </div>
+
+            {/* Balanced 6-Card Grid: Responsive across mobile and desktop */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5 uppercase tracking-wider font-bold text-sm md:text-lg text-white flex-1">
+              {/* Skill 1 */}
+              <div className="core-skill-item bg-zinc-950 border-2 border-zinc-800 p-3 md:p-4 flex flex-col justify-between hover:border-white transition-colors">
+                <div className="text-xs md:text-sm mb-2 text-white">Microsoft Excel &amp; Advanced Formulas</div>
+                <div className="grid grid-cols-8 gap-1.5 h-5 mb-2">
                   {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
                     <motion.div
                       key={i}
                       animate={{ opacity: [0.2, 1, 0.2] }}
-                      transition={{
-                        duration: 1.5,
-                        repeat: Infinity,
-                        delay: i * 0.15,
-                        ease: 'easeInOut',
-                      }}
-                      className="bg-white border-2 border-black"
+                      transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.12, ease: 'easeInOut' }}
+                      className="bg-white"
                     />
                   ))}
                 </div>
-              </motion.div>
+                <span className="font-mono text-[10px] text-zinc-500 normal-case">VLOOKUP, INDEX/MATCH, glidepath modeling, pivot pipelines</span>
+              </div>
 
-              {/* Skill 2: Workflow Automation & PowerApps */}
-              <motion.div
-                whileHover={{
-                  scale: 1.03,
-                  backgroundColor: '#ffffff',
-                  color: '#000000',
-                  padding: '1rem',
-                }}
-                className="core-skill-item border-b-4 border-zinc-800 pb-3 flex flex-col justify-between pointer-events-auto transition-colors cursor-pointer"
-              >
-                <div className="mb-3">Workflow Automation &amp; PowerApps</div>
-                <div className="flex items-center gap-2 h-6 md:h-7 mix-blend-difference">
+              {/* Skill 2 */}
+              <div className="core-skill-item bg-zinc-950 border-2 border-zinc-800 p-3 md:p-4 flex flex-col justify-between hover:border-white transition-colors">
+                <div className="text-xs md:text-sm mb-2 text-white">Workflow Automation &amp; PowerApps</div>
+                <div className="flex items-center gap-2 h-5 mb-2">
                   <motion.div
                     animate={{ rotate: 180 }}
-                    transition={{
-                      duration: 1,
-                      repeat: Infinity,
-                      ease: 'backInOut',
-                      repeatDelay: 0.5,
-                    }}
-                    className="w-5 h-5 md:w-6 md:h-6 bg-white flex-shrink-0"
+                    transition={{ duration: 1, repeat: Infinity, ease: 'backInOut', repeatDelay: 0.5 }}
+                    className="w-4 h-4 bg-white flex-shrink-0"
                   />
-                  <div className="flex-1 h-1 md:h-2 bg-zinc-800 relative overflow-hidden">
+                  <div className="flex-1 h-1 bg-zinc-800 relative overflow-hidden">
                     <motion.div
                       animate={{ x: ['-100%', '100%'] }}
                       transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
@@ -562,118 +690,71 @@ export default function HorizontalCareerScroll({
                   <motion.div
                     animate={{ scale: [1, 0.5, 1] }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                    className="w-5 h-5 md:w-6 md:h-6 bg-zinc-500 rounded-full flex-shrink-0"
+                    className="w-4 h-4 bg-zinc-500 rounded-full flex-shrink-0"
                   />
                 </div>
-              </motion.div>
+                <span className="font-mono text-[10px] text-zinc-500 normal-case">End-to-end data pipeline automation &amp; operational trigger flows</span>
+              </div>
 
-              {/* Skill 3: Office Scripts / TypeScript */}
-              <motion.div
-                whileHover={{
-                  scale: 1.03,
-                  backgroundColor: '#ffffff',
-                  color: '#000000',
-                  padding: '1rem',
-                }}
-                className="core-skill-item border-b-4 border-zinc-800 pb-3 flex flex-col justify-between pointer-events-auto transition-colors cursor-pointer"
-              >
-                <div className="mb-3">Office Scripts / TypeScript</div>
-                <div className="h-6 md:h-7 bg-zinc-900 border-2 border-zinc-700 p-1 md:p-1.5 flex items-center overflow-hidden relative mix-blend-difference">
+              {/* Skill 3 */}
+              <div className="core-skill-item bg-zinc-950 border-2 border-zinc-800 p-3 md:p-4 flex flex-col justify-between hover:border-white transition-colors">
+                <div className="text-xs md:text-sm mb-2 text-white">Office Scripts &amp; TypeScript Automation</div>
+                <div className="h-5 bg-zinc-900 px-2 flex items-center overflow-hidden mb-2">
                   <motion.div
                     animate={{ width: ['0%', '100%', '100%', '0%'] }}
                     transition={{ duration: 3.5, repeat: Infinity, repeatDelay: 1, ease: 'linear' }}
                     className="font-mono text-[9px] md:text-xs text-zinc-300 whitespace-nowrap overflow-hidden"
                   >
-                    <span className="text-red-400">const</span>{' '}
-                    <span className="text-blue-300">script</span> ={' '}
-                    <span className="text-red-400">async</span> () =&gt; success;
+                    <span className="text-red-400">const</span> <span className="text-blue-300">etl</span> = <span className="text-red-400">async</span> () =&gt; processSKU();
                   </motion.div>
-                  <motion.div
-                    animate={{ opacity: [0, 1, 0] }}
-                    transition={{ duration: 0.8, repeat: Infinity }}
-                    className="w-1.5 md:w-2 h-3 md:h-4 bg-white ml-1 flex-shrink-0"
-                  />
                 </div>
-              </motion.div>
+                <span className="font-mono text-[10px] text-zinc-500 normal-case">TypeScript cloud scripts for automated batch spreadsheet transformation</span>
+              </div>
 
-              {/* Skill 4: Claude Projects & MCP Scraping */}
-              <motion.div
-                whileHover={{
-                  scale: 1.03,
-                  backgroundColor: '#ffffff',
-                  color: '#000000',
-                  padding: '1rem',
-                }}
-                className="core-skill-item border-b-4 border-zinc-800 pb-3 flex flex-col justify-between pointer-events-auto transition-colors cursor-pointer"
-              >
-                <div className="mb-3">Claude Projects &amp; MCP Scraping</div>
-                <div className="flex items-center justify-center gap-1.5 md:gap-2 h-6 md:h-7 overflow-hidden mix-blend-difference">
+              {/* Skill 4 */}
+              <div className="core-skill-item bg-zinc-950 border-2 border-zinc-800 p-3 md:p-4 flex flex-col justify-between hover:border-white transition-colors">
+                <div className="text-xs md:text-sm mb-2 text-white">Claude Projects &amp; MCP Tooling</div>
+                <div className="flex items-center gap-1.5 h-5 mb-2">
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
                     <motion.div
                       key={i}
                       animate={{ height: ['20%', '100%', '20%'] }}
-                      transition={{
-                        duration: 1.2,
-                        repeat: Infinity,
-                        delay: i * 0.1,
-                        ease: 'easeInOut',
-                      }}
+                      transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.08, ease: 'easeInOut' }}
                       className="flex-1 max-w-[8px] bg-white rounded-full"
                     />
                   ))}
                 </div>
-              </motion.div>
+                <span className="font-mono text-[10px] text-zinc-500 normal-case">Model Context Protocol integration, automated scrapers, prompt systems</span>
+              </div>
 
-              {/* Skill 5: Real-Time Monitoring & Floor SME */}
-              <motion.div
-                whileHover={{
-                  scale: 1.03,
-                  backgroundColor: '#ffffff',
-                  color: '#000000',
-                  padding: '1rem',
-                }}
-                className="core-skill-item border-b-4 border-zinc-800 pb-3 flex flex-col justify-between pointer-events-auto transition-colors cursor-pointer"
-              >
-                <div className="mb-3">Real-Time Monitoring &amp; Floor SME</div>
-                <div className="h-6 md:h-7 relative overflow-hidden flex items-center border-l-4 border-red-500 bg-zinc-900 pl-3 mix-blend-difference">
+              {/* Skill 5 */}
+              <div className="core-skill-item bg-zinc-950 border-2 border-zinc-800 p-3 md:p-4 flex flex-col justify-between hover:border-white transition-colors">
+                <div className="text-xs md:text-sm mb-2 text-white">Real-Time Operations &amp; Floor SME</div>
+                <div className="h-5 flex items-center border-l-2 border-red-500 bg-zinc-900 px-2 mb-2">
                   <motion.div
                     animate={{ opacity: [1, 0, 1] }}
                     transition={{ duration: 0.8, repeat: Infinity }}
-                    className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-red-500 mr-2 shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    className="w-2 h-2 rounded-full bg-red-500 mr-2"
                   />
-                  <span className="font-mono text-[9px] md:text-xs text-red-400 tracking-widest uppercase font-bold">
-                    Live_Feed_Active
-                  </span>
-                  <motion.div
-                    animate={{ x: ['-100%', '300%'] }}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
-                    className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none"
-                  />
+                  <span className="font-mono text-[9px] text-red-400 tracking-wider font-bold uppercase">Live Floor Support</span>
                 </div>
-              </motion.div>
+                <span className="font-mono text-[10px] text-zinc-500 normal-case">Tier-2 escalation dispatch, team calibration, and floor mentorship</span>
+              </div>
 
-              {/* Skill 6: Data QA & Operations Reporting */}
-              <motion.div
-                whileHover={{
-                  scale: 1.03,
-                  backgroundColor: '#ffffff',
-                  color: '#000000',
-                  padding: '1rem',
-                }}
-                className="core-skill-item border-b-4 border-zinc-800 pb-3 flex flex-col justify-between pointer-events-auto transition-colors cursor-pointer"
-              >
-                <div className="mb-3">Data QA &amp; Operations Reporting</div>
-                <div className="h-6 md:h-7 flex flex-col justify-between overflow-hidden relative p-1 bg-black mix-blend-difference">
-                  <div className="w-full h-1 bg-zinc-800" />
-                  <div className="w-full h-1 bg-zinc-800" />
-                  <div className="w-full h-1 bg-zinc-800" />
+              {/* Skill 6 */}
+              <div className="core-skill-item bg-zinc-950 border-2 border-zinc-800 p-3 md:p-4 flex flex-col justify-between hover:border-white transition-colors">
+                <div className="text-xs md:text-sm mb-2 text-white">Data QA &amp; Operations Reporting</div>
+                <div className="h-5 flex flex-col justify-between p-1 bg-black mb-2 relative overflow-hidden">
+                  <div className="w-full h-0.5 bg-zinc-800" />
+                  <div className="w-full h-0.5 bg-zinc-800" />
                   <motion.div
                     animate={{ x: ['-100%', '200%'] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                    className="absolute inset-y-0 w-1/4 border-x-4 border-white bg-white/20 pointer-events-none"
+                    transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+                    className="absolute inset-y-0 w-1/4 bg-white/30 pointer-events-none"
                   />
                 </div>
-              </motion.div>
+                <span className="font-mono text-[10px] text-zinc-500 normal-case">Error auditing, SLA tracking, executive summary dashboards</span>
+              </div>
             </div>
           </div>
         </section>
