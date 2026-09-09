@@ -43,102 +43,55 @@ export default function HorizontalCareerScroll({
             if (!track) return;
 
             const totalPanels = 6;
-            const scrollDistance = () => window.innerWidth * (totalPanels - 1);
+            const scrollDist = () => document.documentElement.scrollHeight - window.innerHeight;
 
             const tl = gsap.timeline({
               scrollTrigger: {
                 id: 'horizontal-career-trigger',
-                trigger: containerRef.current,
-                pin: true,
+                trigger: document.body,
+                start: () => scrollDist() * 0.58,
+                end: () => scrollDist() * 0.90,
                 scrub: 1,
-                start: 'top top',
-                end: () => `+=${scrollDistance()}`,
                 invalidateOnRefresh: true,
               },
             });
 
-            // Master horizontal translation across 6 panels (5 transition intervals)
+            // Master horizontal translation across 6 uniform panels (0 to -500vw)
             tl.to(
               track,
               {
                 x: () => -(track.scrollWidth - window.innerWidth),
                 ease: 'none',
-                duration: totalPanels - 1, // 5 time units
+                duration: totalPanels - 1, // 5 duration units: 0..1, 1..2, 2..3, 3..4, 4..5
               },
               0
             );
 
-            // BOUNDARY 1 (Flatworld -> INFLXD, t = 0.5 to 1.5):
-            // Parallax slide: right visual has a lag offset that snaps into alignment
+            // BOUNDARY 1 (Flatworld -> INFLXD, t = 0.7 to 1.2):
+            // Subtle visual settling offset
             tl.fromTo(
               '.inflxd-visual',
-              { x: 120, opacity: 0.6 },
-              { x: 0, opacity: 1, ease: 'power2.out', duration: 0.6 },
-              0.7
+              { x: 40, opacity: 0.8 },
+              { x: 0, opacity: 1, ease: 'power2.out', duration: 0.35 },
+              0.8
             );
 
-            // BOUNDARY 2 (INFLXD -> Alorica, t = 1.6 to 2.4):
-            // Depth Zoom & Fade: INFLXD shrinks & dims, Alorica zooms in from 1.08
-            tl.to(
-              '.inflxd-card',
-              {
-                scale: 0.92,
-                opacity: 0.35,
-                ease: 'power1.inOut',
-                duration: 0.5,
-              },
-              1.7
-            );
-            tl.fromTo(
-              '.alorica-card',
-              { scale: 1.08, opacity: 0.35 },
-              { scale: 1, opacity: 1, ease: 'power2.out', duration: 0.5 },
-              1.9
-            );
-
-            // BOUNDARY 3 (Alorica -> Concentrix, t = 2.6 to 3.4):
-            // Angled Skew Wipe: Concentrix enters with a dynamic -5deg velocity skew
-            tl.fromTo(
-              '.concentrix-card',
-              { skewX: -5, opacity: 0.7 },
-              { skewX: 0, opacity: 1, ease: 'power2.out', duration: 0.5 },
-              2.8
-            );
-
-            // BOUNDARY 4 (Concentrix -> Director's Cut, t = 3.6 to 4.3):
-            // Cinematic Shutter Wipe: Horizontal clapper shutters snap close and open
-            tl.fromTo(
-              '.cinema-shutter-top',
-              { scaleY: 0 },
-              { scaleY: 1, ease: 'power2.in', duration: 0.2, yoyo: true, repeat: 1 },
-              3.75
-            );
-            tl.fromTo(
-              '.cinema-shutter-bottom',
-              { scaleY: 0 },
-              { scaleY: 1, ease: 'power2.in', duration: 0.2, yoyo: true, repeat: 1 },
-              3.75
-            );
+            // BOUNDARY 4 (Concentrix -> Director's Cut, t = 3.7 to 4.2):
+            // Varied transition: subtle cinematic depth zoom & focus
             tl.fromTo(
               '.directors-cut-card',
-              { scale: 0.94, opacity: 0.4 },
-              { scale: 1, opacity: 1, ease: 'power2.out', duration: 0.45 },
-              3.95
+              { scale: 0.97, opacity: 0.85 },
+              { scale: 1, opacity: 1, ease: 'power2.out', duration: 0.4 },
+              3.8
             );
 
-            // BOUNDARY 5 (Director's Cut -> Core Skills, t = 4.5 to 5.0):
-            // Terminal Inversion Wipe: High contrast entrance into dark terminal
-            tl.fromTo(
-              '.core-skills-heading',
-              { x: -60, opacity: 0 },
-              { x: 0, opacity: 1, ease: 'power2.out', duration: 0.35 },
-              4.6
-            );
+            // BOUNDARY 5 (Director's Cut -> Core Skills, t = 4.6 to 5.0):
+            // Stagger reveal for skill items entering dark terminal
             tl.fromTo(
               '.core-skill-item',
-              { y: 35, opacity: 0 },
-              { y: 0, opacity: 1, stagger: 0.04, ease: 'power2.out', duration: 0.35 },
-              4.65
+              { y: 20, opacity: 0.4 },
+              { y: 0, opacity: 1, stagger: 0.03, ease: 'power2.out', duration: 0.3 },
+              4.7
             );
           }
         }
@@ -153,28 +106,18 @@ export default function HorizontalCareerScroll({
     <div
       ref={containerRef}
       id="section-career"
-      className="relative w-full bg-black text-white overflow-hidden select-none md:select-auto"
+      className="w-full h-full relative overflow-hidden bg-black select-none md:select-auto"
     >
-      {/* Cinematic Shutter Overlays for Boundary 4 */}
-      <div
-        className="cinema-shutter-top fixed top-0 left-0 w-full h-1/2 bg-black z-50 pointer-events-none origin-top"
-        style={{ transform: 'scaleY(0)' }}
-      />
-      <div
-        className="cinema-shutter-bottom fixed bottom-0 left-0 w-full h-1/2 bg-black z-50 pointer-events-none origin-bottom"
-        style={{ transform: 'scaleY(0)' }}
-      />
-
-      {/* Horizontal Strip (Desktop) / Vertical Stack (Mobile) */}
+      {/* Horizontal Strip: 6 side-by-side full-screen panels */}
       <div
         ref={trackRef}
-        className="flex flex-col md:flex-row w-full md:w-[600vw] h-auto md:h-screen will-change-transform"
+        className="flex flex-row w-[600vw] h-full will-change-transform"
       >
         {/* ============================================================ */}
         {/* PANEL 1: Flatworld / Flinn Scientific (01)                   */}
         {/* ============================================================ */}
-        <section className="w-full md:w-screen h-auto md:h-screen flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
-          <div className="w-full h-full max-w-7xl bg-white flex flex-col border-4 border-black overflow-hidden relative shadow-[10px_10px_0px_white]">
+        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
+          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
             <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest flex-shrink-0 relative z-10 text-black">
               <span>EXPERIENCE [01]</span>
               <span>Jan 2026 — Jul 2026</span>
@@ -190,7 +133,7 @@ export default function HorizontalCareerScroll({
                   Data Entry Associate → Project Lead
                 </div>
                 <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">
-                  Wrote TypeScript Office Scripts & Claude MCP scrapers to process 8,000 SKUs.
+                  Wrote TypeScript Office Scripts &amp; Claude MCP scrapers to process 8,000 SKUs.
                 </p>
                 <div className="flex flex-wrap items-center gap-3">
                   <div className="inline-block bg-black text-white px-3 py-2 font-bold text-xs md:text-sm uppercase tracking-widest">
@@ -291,8 +234,8 @@ export default function HorizontalCareerScroll({
         {/* ============================================================ */}
         {/* PANEL 2: INFLXD (02)                                         */}
         {/* ============================================================ */}
-        <section className="w-full md:w-screen h-auto md:h-screen flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
-          <div className="inflxd-card w-full h-full max-w-7xl bg-white flex flex-col border-4 border-black overflow-hidden relative shadow-[10px_10px_0px_white]">
+        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
+          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
             <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
               <span>EXPERIENCE [02]</span>
               <span>Sep 2025 — Mar 2026</span>
@@ -357,8 +300,8 @@ export default function HorizontalCareerScroll({
         {/* ============================================================ */}
         {/* PANEL 3: Alorica / Google Fi Wireless (03)                   */}
         {/* ============================================================ */}
-        <section className="w-full md:w-screen h-auto md:h-screen flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
-          <div className="alorica-card w-full h-full max-w-7xl bg-white flex flex-col border-4 border-black overflow-hidden relative shadow-[10px_10px_0px_white]">
+        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
+          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
             <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
               <span>EXPERIENCE [03]</span>
               <span>Jan 2025 — Jan 2026</span>
@@ -421,8 +364,8 @@ export default function HorizontalCareerScroll({
         {/* ============================================================ */}
         {/* PANEL 4: Concentrix / Macy's (04)                            */}
         {/* ============================================================ */}
-        <section className="w-full md:w-screen h-auto md:h-screen flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
-          <div className="concentrix-card w-full h-full max-w-7xl bg-white flex flex-col border-4 border-black overflow-hidden relative shadow-[10px_10px_0px_white]">
+        <section className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black">
+          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative">
             <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
               <span>EXPERIENCE [04]</span>
               <span>Jul 2024 — Jan 2025</span>
@@ -481,11 +424,11 @@ export default function HorizontalCareerScroll({
                   Customer Service Representative → Reporting Analyst Apprentice
                 </div>
                 <p className="text-2xl md:text-4xl lg:text-5xl max-w-lg mb-8 leading-tight font-medium text-zinc-700">
-                  Top agent in 3 months; promoted to Reporting Apprentice & SME supporting 50+
+                  Top agent in 3 months; promoted to Reporting Apprentice &amp; SME supporting 50+
                   agents.
                 </p>
                 <div className="inline-block bg-black text-white px-3 py-2 self-start font-bold text-xs md:text-sm uppercase tracking-widest">
-                  Built glidepath models & automated reports.
+                  Built glidepath models &amp; automated reports.
                 </div>
               </div>
             </div>
@@ -497,9 +440,9 @@ export default function HorizontalCareerScroll({
         {/* ============================================================ */}
         <section
           id="section-directors-cut"
-          className="w-full md:w-screen h-auto md:h-screen flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black"
+          className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black"
         >
-          <div className="directors-cut-card w-full h-full max-w-7xl bg-white flex flex-col border-4 border-black overflow-hidden relative pointer-events-auto shadow-[10px_10px_0px_white]">
+          <div className="directors-cut-card w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-white flex flex-col border-4 border-black overflow-hidden relative pointer-events-auto">
             {/* Header Bar */}
             <div className="flex border-b-4 border-black bg-white justify-between items-center px-4 py-2 uppercase font-bold text-sm md:text-base tracking-widest text-black flex-shrink-0">
               <div className="flex items-center gap-2">
@@ -550,9 +493,9 @@ export default function HorizontalCareerScroll({
         {/* ============================================================ */}
         <section
           id="section-core-skills"
-          className="w-full md:w-screen h-auto md:h-screen flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black"
+          className="w-screen h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative bg-black"
         >
-          <div className="w-full h-full max-w-7xl bg-black border-4 border-white flex flex-col justify-center p-6 md:p-12 lg:p-16 relative overflow-hidden shadow-[10px_10px_0px_white]">
+          <div className="w-full h-full max-w-7xl max-h-[calc(100vh-2rem)] md:max-h-[calc(100vh-4rem)] bg-black border-4 border-white flex flex-col justify-center p-6 md:p-12 lg:p-16 relative overflow-hidden">
             <h2 className="core-skills-heading text-4xl md:text-6xl lg:text-[7rem] font-bold uppercase tracking-tighter mb-8 md:mb-12 leading-none border-b-8 border-white pb-3 text-white">
               Core
               <br />

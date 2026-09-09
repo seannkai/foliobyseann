@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, MotionValue, useTransform } from 'framer-motion';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const sections = [
-  { id: '00', title: 'Title', fallbackProgress: 0 },
-  { id: '01', title: 'Prelude', fallbackProgress: 0.15 },
-  { id: '02', title: 'Career', fallbackProgress: 0.54 },
-  { id: '03', title: "Director's Cut", fallbackProgress: 0.69 },
-  { id: '04', title: 'Core Skills', fallbackProgress: 0.73 },
-  { id: '05', title: 'Education', fallbackProgress: 0.77 },
-  { id: '06', title: 'About Me', fallbackProgress: 1.0 },
+  { id: '00', title: 'Title', progress: 0 },
+  { id: '01', title: 'Prelude', progress: 0.15 },
+  { id: '02', title: 'Career', progress: 0.58 },
+  { id: '03', title: "Director's Cut", progress: 0.82 },
+  { id: '04', title: 'Core Skills', progress: 0.88 },
+  { id: '05', title: 'Education', progress: 0.90 },
+  { id: '06', title: 'About Me', progress: 1.0 },
 ];
 
 interface TableOfContentsProps {
@@ -22,68 +21,26 @@ export default function TableOfContents({ progress }: TableOfContentsProps) {
   // Background/Text tone switches across the global scroll range
   const bgColor = useTransform(
     progress,
-    [0, 0.02, 0.05, 0.47, 0.49, 0.54, 0.72, 0.98, 1],
-    ['#ffffff', '#ffffff', '#000000', '#000000', '#ffffff', '#000000', '#000000', '#ffffff', '#ffffff']
+    [0, 0.02, 0.05, 0.47, 0.49, 0.56, 0.58, 0.87, 0.88, 0.97, 1],
+    ['#ffffff', '#ffffff', '#000000', '#000000', '#ffffff', '#ffffff', '#000000', '#000000', '#000000', '#ffffff', '#ffffff']
   );
   const textColor = useTransform(
     progress,
-    [0, 0.02, 0.05, 0.47, 0.49, 0.54, 0.72, 0.98, 1],
-    ['#000000', '#000000', '#ffffff', '#ffffff', '#000000', '#ffffff', '#ffffff', '#000000', '#000000']
+    [0, 0.02, 0.05, 0.47, 0.49, 0.56, 0.58, 0.87, 0.88, 0.97, 1],
+    ['#000000', '#000000', '#ffffff', '#ffffff', '#000000', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#000000', '#000000']
   );
   const borderColor = useTransform(
     progress,
-    [0, 0.02, 0.05, 0.47, 0.49, 0.54, 0.72, 0.98, 1],
-    ['#000000', '#000000', '#ffffff', '#ffffff', '#000000', '#ffffff', '#ffffff', '#000000', '#000000']
+    [0, 0.02, 0.05, 0.47, 0.49, 0.56, 0.58, 0.87, 0.88, 0.97, 1],
+    ['#000000', '#000000', '#ffffff', '#ffffff', '#000000', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#000000', '#000000']
   );
 
-  const scrollToSection = (sectionId: string, fallbackProgress: number) => {
-    let targetY: number | null = null;
-
-    if (sectionId === '00') {
-      targetY = 0;
-    } else if (sectionId === '01') {
-      const intro = document.getElementById('section-intro');
-      if (intro) targetY = intro.offsetTop + intro.offsetHeight * 0.25;
-    } else if (sectionId === '02') {
-      const career = document.getElementById('section-career');
-      if (career) targetY = career.offsetTop;
-    } else if (sectionId === '03') {
-      const trigger = ScrollTrigger.getById('horizontal-career-trigger');
-      if (trigger) {
-        // Panel 5 is at 4/5 of the horizontal pin progress
-        targetY = trigger.start + (trigger.end - trigger.start) * (4 / 5);
-      } else {
-        const dc = document.getElementById('section-directors-cut');
-        if (dc) targetY = dc.offsetTop;
-      }
-    } else if (sectionId === '04') {
-      const trigger = ScrollTrigger.getById('horizontal-career-trigger');
-      if (trigger) {
-        // Panel 6 is at 5/5 of the horizontal pin progress
-        targetY = trigger.start + (trigger.end - trigger.start) * (5 / 5);
-      } else {
-        const cs = document.getElementById('section-core-skills');
-        if (cs) targetY = cs.offsetTop;
-      }
-    } else if (sectionId === '05') {
-      const edu = document.getElementById('section-education');
-      if (edu) targetY = edu.offsetTop + 100;
-    } else if (sectionId === '06') {
-      targetY = document.documentElement.scrollHeight - window.innerHeight;
-    }
-
-    if (targetY !== null && !isNaN(targetY)) {
-      window.scrollTo({
-        top: targetY,
-        behavior: 'smooth',
-      });
-    } else {
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      window.scrollTo({
-        top: scrollHeight * fallbackProgress,
-        behavior: 'smooth',
-      });
-    }
+  const scrollToSection = (progressTarget: number) => {
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({
+      top: scrollHeight * progressTarget,
+      behavior: 'smooth',
+    });
     setIsOpen(false);
   };
 
@@ -168,7 +125,7 @@ export default function TableOfContents({ progress }: TableOfContentsProps) {
                 {sections.map((section) => (
                   <motion.button
                     key={section.id}
-                    onClick={() => scrollToSection(section.id, section.fallbackProgress)}
+                    onClick={() => scrollToSection(section.progress)}
                     initial={{ backgroundColor: 'transparent', color: textColor.get() }}
                     whileHover={{ backgroundColor: textColor.get(), color: bgColor.get() }}
                     style={{ borderBottomColor: borderColor, color: textColor }}
